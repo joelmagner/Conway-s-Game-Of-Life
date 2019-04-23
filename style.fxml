@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+  <children>
+    <MenuBar VBox.vgrow="NEVER">
+      <menus>
+        <Menu mnemonicParsing="false" text="Connection">
+          <items>
+            <MenuItem fx:id="openConnection" mnemonicParsing="false" text="Open Connection" />
+            <MenuItem fx:id="closeConnection" mnemonicParsing="false" text="Close Connection" />
+                  <MenuItem fx:id="saveConnection" mnemonicParsing="false" text="Save Connection" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Test">
+          <items>
+            <MenuItem fx:id="testRender" mnemonicParsing="false" text="Render" />
+            <MenuItem fx:id="testConnection" mnemonicParsing="false" text="Test Connection"/>
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Canvas height="374.0" layoutX="121.0" width="370.0" />
+         </children>
+    </AnchorPane>
+  </children>
+</VBox>

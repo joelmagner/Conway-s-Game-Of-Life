@@ -1,32 +1,56 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
+package src;
+
+import java.io.*;
+import java.net.*;
 
 public class Server {
 
-	public static void main(String[] args) throws IOException{
-		ServerSocket ss = new ServerSocket(5000);
-		Socket s = ss.accept();
-		
-		System.out.println("Client connected");
-		
-		InputStreamReader isr = new InputStreamReader(s.getInputStream());
-		BufferedReader br = new BufferedReader(isr);
-		String str = br.readLine();
-		
-		System.out.println("Client saying : " + str);
-	
-		
-		PrintWriter pr = new PrintWriter(s.getOutputStream());
-		pr.println("Server message to client");
-		pr.flush();
-		
-		if(str == "!close") {
-			ss.close();
+	public static void main(String[] arg) {
+
+		Grid grid = null;
+		try {
+
+			ServerSocket serverConnection = new ServerSocket(5000);
+
+			System.out.println("Server Ready...\nWaiting For Incoming Connections...");
+
+			Socket socket = serverConnection.accept();
+			ObjectInputStream serverInputStream = new ObjectInputStream(socket.getInputStream());
+			ObjectOutputStream serverOutputStream = new ObjectOutputStream(socket.getOutputStream());
+			try{
+				while(true){
+					try{
+						System.out.println("Connection Accepted!");
+
+
+						grid = (Grid)serverInputStream.readObject();
+						if(grid == null){
+							break;
+						}
+						//client wants new squares
+						//call function
+						//Send them back to client
+
+						serverOutputStream.writeObject(grid);
+
+
+					} catch(Exception ex){
+						socket.close();
+					}
+				}
+			} catch(Exception ex){
+				serverConnection.close();
+			} finally {
+				serverInputStream.close();
+				serverOutputStream.close();
+			}
+ 
+
+
+
+
+		}  catch(Exception e) {System.out.println(e);
 		}
 	}
-	
+
 }

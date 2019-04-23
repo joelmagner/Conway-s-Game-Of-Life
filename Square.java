@@ -1,3 +1,4 @@
+package src;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -5,7 +6,6 @@ import javafx.scene.shape.Rectangle;
 public class Square {
 	public int x, y, squareSize;
 	boolean status;
-	Rectangle rect;
 	Color fill, stroke;
 
 	public Square() {
@@ -17,14 +17,6 @@ public class Square {
 		this.y = y;
 		this.squareSize = squareSize;
 		this.status = status;
-	}
-
-	public Rectangle getRectangle() {
-		return this.rect;
-	}
-
-	public void setRectangle(Rectangle rect) {
-		this.rect = rect;
 	}
 	
 	//get

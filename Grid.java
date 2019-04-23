@@ -1,3 +1,4 @@
+package src;
 
 import java.util.ArrayList;
 
@@ -7,7 +8,6 @@ import javafx.scene.paint.Color;
 public class Grid {
 	ArrayList<Square> grid = new ArrayList<Square>();
 	int gridSize;
-	Color fill = Color.ALICEBLUE, stroke = Color.BLACK;
 	Pane p;
 
 	public Grid(int gridSize, int squareSize, double spawnChance) {
