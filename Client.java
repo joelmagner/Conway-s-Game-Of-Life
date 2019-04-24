@@ -22,7 +22,6 @@ public class Client extends Application implements Initializable {
 	@FXML private MenuItem testRender;
 	@FXML private MenuItem testRenderX;
 	@FXML private MenuItem optionsMenuItem;
-	@FXML private MenuBar menuBar;
 	private Group group;
 	private Parent root;
 	private Scene scene;
@@ -65,7 +64,6 @@ public class Client extends Application implements Initializable {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("style.fxml"));
 		loader.setController(this);
 		this.root = loader.load();
-		menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
 		this.group.getChildren().addAll(this.root);
 		this.scene = new Scene(this.group, 400, 425);
 		primaryStage.setScene(this.scene);
