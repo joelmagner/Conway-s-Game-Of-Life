@@ -21,7 +21,12 @@
         <Menu mnemonicParsing="false" text="Test">
           <items>
             <MenuItem fx:id="testRender" mnemonicParsing="false" text="Render" />
-            <MenuItem fx:id="testConnection" mnemonicParsing="false" text="Test Connection"/>
+            <MenuItem fx:id="testRenderX" mnemonicParsing="false" text="Render X"/>
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Customizing">
+          <items>
+            <MenuItem fx:id="optionsMenuItem" mnemonicParsing="false" text="Options" />
           </items>
         </Menu>
       </menus>
