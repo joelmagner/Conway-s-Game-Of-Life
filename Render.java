@@ -88,7 +88,7 @@ public class Render implements Serializable {
     public void death(Square square) {
         square.setSquareStatus(false);
 
-        square.setSquareFill(Color.valueOf("#FF5722"));
+        square.setSquareFill(Color.valueOf("#FFFFFF"));
     }
 
     public void death(Square square, Color color) {
