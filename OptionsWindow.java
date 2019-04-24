@@ -1,5 +1,6 @@
 package src;
 
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -9,9 +10,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.*;
 import javafx.scene.*;
-
-import javax.xml.soap.Text;
-import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -31,6 +29,7 @@ public class OptionsWindow{
         hbox.setSpacing(10);
         TextField input = new TextField();
         Button acceptBtn = new Button("Accept");
+        acceptBtn.getStyleClass().add("button-success");
         VBox layout = new VBox(10);
         layout.setStyle("-fx-background:#34495e;");
         hbox.getChildren().addAll(input,acceptBtn);
@@ -38,6 +37,7 @@ public class OptionsWindow{
         layout.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(layout);
+        scene.getStylesheets().add("src/style.css");
         window.setScene(scene);
 
         acceptBtn.setOnAction(e -> {
@@ -57,9 +57,9 @@ public class OptionsWindow{
         window.setMinWidth(300);
         window.setMinHeight(250);
 
-        //load settings if there is any
+        //load settings if there are any
         Settings s = new Settings();
-        s.readSettingsFromFile();
+        s.readSettingsFromFile(s.settingsFilePath);
 
         //GridsizeBox
         HBox gridSizeBox = new HBox();
@@ -103,7 +103,10 @@ public class OptionsWindow{
         Button noBtn = new Button("No");
         yesBtn.setPrefSize(100,20);
         noBtn.setPrefSize(100,20);
+        yesBtn.getStyleClass().add("button-success");
+        noBtn.getStyleClass().add("button-danger");
         confirmBox.getChildren().addAll(confirmLabel,yesBtn,noBtn);
+
         yesBtn.setOnAction(e -> {
             answer = true;
             String[] newSettings = new String[]
@@ -113,12 +116,13 @@ public class OptionsWindow{
                 "spawnchance:"+spawnChance.getText()
             };
             try{
-                s.writeSettingsToFile(newSettings);
+                s.writeSettingsToFile(newSettings,s.settingsFilePath);
             } catch(IOException ex){
                 ex.printStackTrace();
             }
             window.close();
         });
+
         noBtn.setOnAction(e -> {
             answer = false;
             window.close();
@@ -130,6 +134,7 @@ public class OptionsWindow{
         layout.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(layout);
+        scene.getStylesheets().add("src/style.css");
         window.setScene(scene);
         window.showAndWait();
 

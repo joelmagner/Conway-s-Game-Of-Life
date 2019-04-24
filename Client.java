@@ -33,9 +33,9 @@ public class Client extends Application implements Initializable {
 
 	private void connectToServer() {
 		try {
-
-			Grid newGrid = new Grid(20, 20, 15); //will have to due for now...
-			Socket socketConnection = new Socket("127.0.0.1", 5000);
+			Settings settings = new Settings();
+			Grid newGrid = new Grid(20, 20, 15); //will have to do for now...
+			Socket socketConnection = new Socket(settings.ipAddress, settings.port);
 
 
 			ObjectOutputStream clientOutputStream = new ObjectOutputStream(socketConnection.getOutputStream());
@@ -47,7 +47,7 @@ public class Client extends Application implements Initializable {
 
 			//i'm assuming that I need to retrive a grid-object here,
 			//and just call "new Render(newGrid);"
-			//afterwards, send a new request from server,
+			//afterwards, send a new grid-request from server,
 
 			clientOutputStream.close();
 			clientInputStream.close();
@@ -79,9 +79,9 @@ public class Client extends Application implements Initializable {
 			if (this.initialRender) {
 				this.initialRender = false;
 				Settings s = new Settings();
-				s.readSettingsFromFile();
+				s.readSettingsFromFile(s.settingsFilePath);
 				this.grid = new Grid(s.gridSize, s.squareSize, s.spawnChance);
-				this.grid.p.setTranslateY(25);
+				this.grid.p.setTranslateY(37);
 				this.group.getChildren().addAll(this.grid.p);
 			}
 			new Render(this.grid);
@@ -96,12 +96,16 @@ public class Client extends Application implements Initializable {
 
 		openConnection.setOnAction(e -> connectToServer());
 
+		saveConnection.setOnAction(e -> {
+			try{
+				ConnectionWindow.display();
+			}catch(IOException ex){ex.printStackTrace();}
+		});
+
 		optionsMenuItem.setOnAction(e -> {
 			try {
 				OptionsWindow.display();
-			} catch (FileNotFoundException ex) {
-				ex.printStackTrace();
-			}
+			} catch (FileNotFoundException ex) {ex.printStackTrace();}
 		});
 	}
 }

@@ -14,7 +14,6 @@ public class Render implements Serializable {
     }
 
     public Render(Grid g) {
-
         for (Square square : g.getGrid()) {
             int x 			= square.getSquareX(),
                 y 			= square.getSquareY(),
@@ -88,7 +87,8 @@ public class Render implements Serializable {
 
     public void death(Square square) {
         square.setSquareStatus(false);
-        square.setSquareFill(Color.BROWN);
+
+        square.setSquareFill(Color.valueOf("#FF5722"));
     }
 
     public void death(Square square, Color color) {
@@ -103,6 +103,6 @@ public class Render implements Serializable {
 
     public void birth(Square square) {
         square.setSquareStatus(true);
-        square.setSquareFill(Color.GREEN);
+        square.setSquareFill(Color.valueOf("#8BC34A"));
     }
 }

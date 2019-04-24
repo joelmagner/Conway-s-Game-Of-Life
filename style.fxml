@@ -7,26 +7,33 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="400.0" prefWidth="640.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
   <children>
-    <MenuBar VBox.vgrow="NEVER">
+    <MenuBar style="-fx-background-insets: 0 0 0 0; -fx-background-color: #1abc9c; -fx-min-height: 35;" VBox.vgrow="NEVER">
       <menus>
-        <Menu mnemonicParsing="false" text="Connection">
+        <Menu fx:id="connectionMenu" mnemonicParsing="false" text="Connection">
           <items>
-            <MenuItem fx:id="openConnection" mnemonicParsing="false" text="Open Connection" />
+            <MenuItem fx:id="openConnection" mnemonicParsing="false" text="Quick Connect" />
+            <MenuItem fx:id="saveConnection" mnemonicParsing="false" text="Connection Settings" />
             <MenuItem fx:id="closeConnection" mnemonicParsing="false" text="Close Connection" />
-                  <MenuItem fx:id="saveConnection" mnemonicParsing="false" text="Save Connection" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Test">
+        <Menu mnemonicParsing="false" text=" Testing  ">
           <items>
             <MenuItem fx:id="testRender" mnemonicParsing="false" text="Render" />
-            <MenuItem fx:id="testRenderX" mnemonicParsing="false" text="Render X"/>
+            <MenuItem fx:id="testRenderX" mnemonicParsing="false" text="Render X" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Customizing">
+        <Menu mnemonicParsing="false" text="Settings">
           <items>
             <MenuItem fx:id="optionsMenuItem" mnemonicParsing="false" text="Options" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Communication">
+          <items>
+            <MenuItem fx:id="pauseMenuItem" mnemonicParsing="false" text="Pause" />
+            <MenuItem fx:id="resumeMenuItem" mnemonicParsing="false" text="Resume" />
+            <MenuItem fx:id="resetMenuItem" mnemonicParsing="false"  text="Reset                " />
           </items>
         </Menu>
       </menus>
