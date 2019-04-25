@@ -1,4 +1,5 @@
-package src;
+package Common;
+
 import javafx.scene.paint.Color;
 
 import java.io.Serializable;
@@ -6,7 +7,7 @@ import java.io.Serializable;
 public class Square implements Serializable {
 	public int x, y, squareSize;
 	boolean status;
-	Color fill, stroke;
+	String fill, stroke;
 
 	public Square() {
 
@@ -18,8 +19,7 @@ public class Square implements Serializable {
 		this.squareSize = squareSize;
 		this.status = status;
 	}
-	
-	//get
+
 	public int getSquareX() {
 		return this.x;
 	}
@@ -28,11 +28,11 @@ public class Square implements Serializable {
 		return this.y;
 	}
 
-	public Color getSquareFill() {
+	public String getSquareFill() {
 		return this.fill;
 	}
 
-	public Color getSquareStroke() {
+	public String getSquareStroke() {
 		return this.stroke;
 	}
 
@@ -43,7 +43,7 @@ public class Square implements Serializable {
 	public boolean getSquareStatus() {
 		return this.status;
 	}
-	//set
+
 	public void setSquareX(int x) {
 		this.x = x;
 	}
@@ -52,7 +52,7 @@ public class Square implements Serializable {
 		this.y = y;
 	}
 
-	public void setSquareFill(Color fill) {
+	public void setSquareFill(String fill) {
 		this.fill = fill;
 	}
 
@@ -60,7 +60,7 @@ public class Square implements Serializable {
 		this.status = status;
 	}
 
-	public void setSquareStroke(Color stroke) {
+	public void setSquareStroke(String stroke) {
 		this.stroke = stroke;
 	}
 

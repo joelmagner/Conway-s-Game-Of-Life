@@ -1,4 +1,4 @@
-package src;
+package Client;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,7 +9,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.*;
 import javafx.scene.*;
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
 
 public class ConnectionWindow{
@@ -88,7 +88,7 @@ public class ConnectionWindow{
         layout.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(layout);
-        scene.getStylesheets().add("src/style.css");
+        scene.getStylesheets().add("style.css");
         window.setScene(scene);
         window.showAndWait();
 

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="400.0" prefWidth="640.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <MenuBar style="-fx-background-insets: 0 0 0 0; -fx-background-color: #1abc9c; -fx-min-height: 35;" VBox.vgrow="NEVER">
       <menus>
@@ -18,15 +18,10 @@
             <MenuItem fx:id="closeConnection" mnemonicParsing="false" text="Close Connection" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text=" Testing  ">
-          <items>
-            <MenuItem fx:id="testRender" mnemonicParsing="false" text="Render" />
-            <MenuItem fx:id="testRenderX" mnemonicParsing="false" text="Render X" />
-          </items>
-        </Menu>
         <Menu mnemonicParsing="false" text="Settings">
           <items>
             <MenuItem fx:id="optionsMenuItem" mnemonicParsing="false" text="Options" />
+            <MenuItem fx:id="predefMenuItem" mnemonicParsing="false" text="Predefs" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Communication">

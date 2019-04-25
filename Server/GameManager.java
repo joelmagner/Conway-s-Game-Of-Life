@@ -1,55 +1,18 @@
-package src;
+package Server;
 
-import javafx.scene.layout.Pane;
+import Common.Grid;
+import Common.Square;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
-import java.io.Serializable;
-
-public class Render implements Serializable {
-
-    public Render(){
-
-    }
-
-    public Pane render(Grid g) {
-        Pane p = new Pane();
-        for (Square square : g.getGrid()) {
-            int x 			= square.getSquareX(),
-                y 			= square.getSquareY(),
-                size 		= square.getSquareSize();
-            Rectangle rect 	= new Rectangle(x*size,y*size,size, size);
-
-            if(square.getSquareStatus()){
-                rect.setFill(Color.valueOf("#FFFFFF"));
-            }else{
-                rect.setFill(Color.valueOf("#8BC34A"));
-            }
-            rect.setStroke(Color.BLACK);
-            p.setTranslateY(37);
-            p.getChildren().add(rect);
-        }
-        return p;
-    }
+public class GameManager {
 
     public Grid round(Grid g){
+        Grid newGrid = new Grid();
         for (Square square : g.getGrid()) {
-            int x 			= square.getSquareX(),
-                y 			= square.getSquareY(),
-                size 		= square.getSquareSize();
-
-            this.constraints(square, g);
+            newGrid.grid.add(this.constraints(square,g));
         }
-        return g;
+        return newGrid;
     }
-    /*
-    *
-    * constraints is the method that calculates what state each square is.
-    * TL;DR - each square can either be dead or alive.
-    *
-    * returns: Square object from within a Grid.
-    *
-    * */
 
     public Square constraints(Square square, Grid grid) {
         // x  x  x
@@ -75,8 +38,8 @@ public class Render implements Serializable {
     private int calcNeighbours(Square square, Grid grid) {
 
         int x = square.getSquareX(),
-            y = square.getSquareY(),
-            n = 0; //neighbours
+                y = square.getSquareY(),
+                n = 0; //neighbours
 
         for (Square s : grid.getGrid()) {
             int sx = s.getSquareX(),
@@ -99,28 +62,23 @@ public class Render implements Serializable {
 
     public void death(Square square) {
         square.setSquareStatus(false);
-    }
-
-    public void colorDeath(Square square) {
-        square.setSquareFill(Color.valueOf("#FFFFFF"));
-    }
-
-    public void colorBirth(Square square) {
-        square.setSquareFill(Color.valueOf("#8BC34A"));
-    }
-
-    public void death(Square square, Color color) {
-        square.setSquareStatus(false);
-        //square.setSquareFill(color);
-    }
-
-    public void birth(Square square, Color color) {
-        square.setSquareStatus(true);
-        //square.setSquareFill(color);
+        square.setSquareFill("#FFFFFF");
     }
 
     public void birth(Square square) {
         square.setSquareStatus(true);
-        //square.setSquareFill(Color.valueOf("#8BC34A"));
+        square.setSquareFill("#8BC34A");
     }
+    //overloads
+    public void death(Square square, String color) {
+        square.setSquareStatus(false);
+        square.setSquareFill(color);
+    }
+
+    public void birth(Square square, String color) {
+        square.setSquareStatus(true);
+        square.setSquareFill(color);
+    }
+
+
 }

@@ -1,4 +1,4 @@
-package src;
+package Common;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 public class Grid implements Serializable {
-	ArrayList<Square> grid = new ArrayList<Square>();
+	public ArrayList<Square> grid = new ArrayList<Square>();
 	int gridSize;
 
 	public Grid(){}

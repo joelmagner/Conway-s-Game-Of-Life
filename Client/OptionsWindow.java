@@ -1,6 +1,5 @@
-package src;
+package Client;
 
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -37,7 +36,7 @@ public class OptionsWindow{
         layout.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(layout);
-        scene.getStylesheets().add("src/style.css");
+        scene.getStylesheets().add("style.css");
         window.setScene(scene);
 
         acceptBtn.setOnAction(e -> {
@@ -134,7 +133,7 @@ public class OptionsWindow{
         layout.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(layout);
-        scene.getStylesheets().add("src/style.css");
+        scene.getStylesheets().add("style.css");
         window.setScene(scene);
         window.showAndWait();
 

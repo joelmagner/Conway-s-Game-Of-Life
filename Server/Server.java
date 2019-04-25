@@ -1,19 +1,19 @@
-package src;
-
-import javafx.scene.layout.Pane;
+package Server;
+import Common.Grid;
+import Common.Square;
 
 import java.io.*;
 import java.net.*;
 
 public class Server {
-
+	static Grid grid = null;
 	public static void main(String[] arg) {
-		Grid grid = null;
+
 		try {
 
 			ServerSocket serverConnection = new ServerSocket(5000);
 
-			System.out.println("Server Ready...\nWaiting For Incoming Connections...");
+			System.out.println("Server.Server Ready...\nWaiting For Incoming Connections...");
 
 			Socket socket = serverConnection.accept();
 			ObjectOutputStream serverOutputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -21,7 +21,7 @@ public class Server {
 			try{
 				System.out.println("Connection Accepted!");
 				DataInputStream dIn = new DataInputStream(socket.getInputStream());
-				Render render = new Render();
+				GameManager gm = new GameManager();
 
 				while(true){
 					try{
@@ -31,21 +31,23 @@ public class Server {
 						switch(messageType)
 						{
 							case 1: // Init grid
+								serverOutputStream.reset();
 								String message = dIn.readUTF();
 								System.out.println("Grid Settings: " + message);
 
-								int gridSize = Integer.parseInt(message.split(":")[0]);
-								int squareSize = Integer.parseInt(message.split(":")[1]);
-								int spawnChance = Integer.parseInt(message.split(":")[2]);
+								int gridSize 	= Integer.parseInt(message.split(":")[0]),
+									squareSize 	= Integer.parseInt(message.split(":")[1]),
+									spawnChance = Integer.parseInt(message.split(":")[2]);
+
 								grid = new Grid(gridSize, squareSize, spawnChance);
-
-								grid = render.round(grid);
+								grid = gm.round(grid);
 								serverOutputStream.writeObject(grid);
-
 								break;
-							case 2: // maybe pause simulation or something similar
+							case 2: // next round
+								serverOutputStream.reset();
 								System.out.println("next round: " + dIn.readUTF());
-								grid = render.round(grid);
+
+								grid = gm.round(grid);
 								serverOutputStream.writeObject(grid);
 
 								break;
