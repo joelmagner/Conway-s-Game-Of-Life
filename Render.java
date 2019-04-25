@@ -8,28 +8,40 @@ import java.io.Serializable;
 
 public class Render implements Serializable {
 
-
     public Render(){
 
     }
 
-    public Render(Grid g) {
+    public Pane render(Grid g) {
+        Pane p = new Pane();
         for (Square square : g.getGrid()) {
             int x 			= square.getSquareX(),
                 y 			= square.getSquareY(),
                 size 		= square.getSquareSize();
             Rectangle rect 	= new Rectangle(x*size,y*size,size, size);
 
-            square = this.constraints(square, g);
-            rect.setFill(square.getSquareFill());
-            /*	red = dead
-                green = alive
-            */
+            if(square.getSquareStatus()){
+                rect.setFill(Color.valueOf("#FFFFFF"));
+            }else{
+                rect.setFill(Color.valueOf("#8BC34A"));
+            }
             rect.setStroke(Color.BLACK);
-            g.p.getChildren().add(rect);
+            p.setTranslateY(37);
+            p.getChildren().add(rect);
         }
+        return p;
     }
 
+    public Grid round(Grid g){
+        for (Square square : g.getGrid()) {
+            int x 			= square.getSquareX(),
+                y 			= square.getSquareY(),
+                size 		= square.getSquareSize();
+
+            this.constraints(square, g);
+        }
+        return g;
+    }
     /*
     *
     * constraints is the method that calculates what state each square is.
@@ -63,8 +75,8 @@ public class Render implements Serializable {
     private int calcNeighbours(Square square, Grid grid) {
 
         int x = square.getSquareX(),
-                y = square.getSquareY(),
-                n = 0; //neighbours
+            y = square.getSquareY(),
+            n = 0; //neighbours
 
         for (Square s : grid.getGrid()) {
             int sx = s.getSquareX(),
@@ -87,22 +99,28 @@ public class Render implements Serializable {
 
     public void death(Square square) {
         square.setSquareStatus(false);
+    }
 
+    public void colorDeath(Square square) {
         square.setSquareFill(Color.valueOf("#FFFFFF"));
+    }
+
+    public void colorBirth(Square square) {
+        square.setSquareFill(Color.valueOf("#8BC34A"));
     }
 
     public void death(Square square, Color color) {
         square.setSquareStatus(false);
-        square.setSquareFill(color);
+        //square.setSquareFill(color);
     }
 
     public void birth(Square square, Color color) {
         square.setSquareStatus(true);
-        square.setSquareFill(color);
+        //square.setSquareFill(color);
     }
 
     public void birth(Square square) {
         square.setSquareStatus(true);
-        square.setSquareFill(Color.valueOf("#8BC34A"));
+        //square.setSquareFill(Color.valueOf("#8BC34A"));
     }
 }

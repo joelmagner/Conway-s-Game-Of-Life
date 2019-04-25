@@ -5,57 +5,120 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.*;
 import java.io.*;
 import java.net.*;
 import java.util.ResourceBundle;
 
-public class Client extends Application implements Initializable {
+public class Client extends Application implements Initializable, Serializable {
 
 
 	@FXML private MenuItem openConnection;
 	@FXML private MenuItem closeConnection;
-	@FXML private MenuItem testConnection;
 	@FXML private MenuItem saveConnection;
 	@FXML private MenuItem testRender;
 	@FXML private MenuItem testRenderX;
 	@FXML private MenuItem optionsMenuItem;
+	@FXML private MenuItem nextRoundMenuItem;
+	@FXML private MenuItem playMenuItem;
 	private Group group;
 	private Parent root;
 	private Scene scene;
 	private Grid grid;
+	private Pane pane;
 	private boolean initialRender = true;
+	private Socket socket;
+	private ObjectInputStream ois;
+	private DataOutputStream dos;
+
+	public Pane getMainPane(){
+		return this.pane;
+	}
+
+	public void setMainpane(Pane pane){
+		this.pane = pane;
+	}
 
 	public static void main(String[] args) {
 		launch(args);
 	}
 
-	private void connectToServer() {
-		try {
-			Settings settings = new Settings();
-			Socket socket = new Socket("127.0.0.1", 5000);
+	private void connectToServer() throws IOException{
+		Render r = new Render();
+		Settings settings = new Settings();
+		settings.readSettingsFromFile(settings.connectionFilePath);
+		this.socket = new Socket(settings.ipAddress, settings.port);
+		this.ois = new ObjectInputStream(socket.getInputStream());
+		this.dos = new DataOutputStream(socket.getOutputStream());
 
-			//obj-streams
-			ObjectInputStream clientInputStream = new ObjectInputStream(socket.getInputStream());
-			//str-streams
-			DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
-			// Send first message
-			dOut.writeByte(1);
-			dOut.writeUTF("20:20:15"); //gridsettings
-			dOut.flush(); // Send off the data
+		openConnection.setText("Status: Connected");
+		openConnection.setDisable(true);
 
-			this.grid = (Grid) clientInputStream.readObject();
+	}
 
-			System.out.println("new grid! ");
-			new Render(this.grid);
-			this.group.getChildren().addAll(this.grid.p);
+	private void closeConnection(){
+		try{
+			this.socket.close();
+			this.ois.close();
+			this.dos.close();
+			System.out.println("Connection closed!");
+			openConnection.setText("Quick Connect");
+			openConnection.setDisable(false);
+			this.pane.getChildren().clear();
+		}catch(IOException ex){
+			ex.printStackTrace();
+		}
+	}
 
-			clientInputStream.close();
-			dOut.writeByte(-1);
-			dOut.close();
-		} catch (Exception e) {
-			System.out.println(e);
+	private void getGridFromServer() throws IOException{
+		Render r = new Render();
+		try{
+
+			Settings s = new Settings();
+			s.readSettingsFromFile(s.settingsFilePath);
+
+			this.dos.writeByte(1);
+			this.dos.writeUTF(s.gridSize+":"+s.squareSize+":"+s.spawnChance);
+			this.dos.flush();
+			this.grid = (Grid) this.ois.readObject();
+			System.out.println("Initial grid" + this.grid);
+
+			this.pane = r.render(this.grid);
+			this.group.getChildren().addAll(this.pane);
+			this.dos.writeByte(-1);
+
+			if(false){
+				this.dos.close();
+				this.ois.close();
+
+			}
+		} catch(ClassNotFoundException ex){
+			System.out.println(ex);
+		}
+	}
+	private void getNextRoundFromServer() throws IOException{
+		Render r = new Render();
+		try{
+
+			this.dos.writeByte(2);
+			this.dos.writeUTF("New round please");
+			this.dos.flush(); // Send data
+			this.grid = (Grid) this.ois.readObject();
+			System.out.println("new round!");
+
+			this.pane = r.render(grid);
+			this.group.getChildren().addAll(this.pane);
+			this.dos.writeByte(-1);
+			if(false){
+				this.dos.close();
+
+				this.ois.close();
+
+			}
+		} catch(ClassNotFoundException ex){
+			System.out.println(ex);
 		}
 	}
 
@@ -82,24 +145,36 @@ public class Client extends Application implements Initializable {
 				Settings s = new Settings();
 				s.readSettingsFromFile(s.settingsFilePath);
 				this.grid = new Grid(s.gridSize, s.squareSize, s.spawnChance);
-				this.grid.p.setTranslateY(37);
-				this.group.getChildren().addAll(this.grid.p);
 			}
-			new Render(this.grid);
+			Render r = new Render();
+			r.round(this.grid);
+			this.pane = r.render(grid);
+			this.pane.setTranslateY(37);
+			this.group.getChildren().addAll(this.pane);
 		});
 
 		testRenderX.setOnAction(e -> {
 			int input = OptionsWindow.prompt();
 			for (int i = 0; i < input; i++) {
-				new Render(this.grid);
+				Render r = new Render();
+				r.round(this.grid);
+				this.pane = r.render(grid);
+				this.group.getChildren().addAll(this.pane);
 			}
 		});
-
-		openConnection.setOnAction(e -> connectToServer());
-
-		saveConnection.setOnAction(e -> {
+		openConnection.setOnAction(e -> {
 			try{
-				ConnectionWindow.display();
+				connectToServer();
+			}catch(IOException ex){ex.printStackTrace();}
+		});
+
+		saveConnection.setOnAction(e -> ConnectionWindow.display());
+
+		closeConnection.setOnAction(e -> closeConnection());
+
+		playMenuItem.setOnAction(e -> {
+			try{
+				getGridFromServer();
 			}catch(IOException ex){ex.printStackTrace();}
 		});
 
@@ -108,5 +183,12 @@ public class Client extends Application implements Initializable {
 				OptionsWindow.display();
 			} catch (FileNotFoundException ex) {ex.printStackTrace();}
 		});
+
+		nextRoundMenuItem.setOnAction(e -> {
+			try{
+				getNextRoundFromServer();
+			}catch(IOException ex){ex.printStackTrace();}
+		});
+
 	}
 }

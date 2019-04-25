@@ -31,6 +31,8 @@
         </Menu>
         <Menu mnemonicParsing="false" text="Communication">
           <items>
+            <MenuItem fx:id="playMenuItem" mnemonicParsing="false" text="New Game" />
+            <MenuItem fx:id="nextRoundMenuItem" mnemonicParsing="false" text="Next Round" />
             <MenuItem fx:id="pauseMenuItem" mnemonicParsing="false" text="Pause" />
             <MenuItem fx:id="resumeMenuItem" mnemonicParsing="false" text="Resume" />
             <MenuItem fx:id="resetMenuItem" mnemonicParsing="false"  text="Reset                " />

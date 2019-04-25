@@ -1,7 +1,9 @@
 package src;
 import javafx.scene.paint.Color;
 
-public class Square {
+import java.io.Serializable;
+
+public class Square implements Serializable {
 	public int x, y, squareSize;
 	boolean status;
 	Color fill, stroke;

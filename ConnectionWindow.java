@@ -16,7 +16,7 @@ public class ConnectionWindow{
 
     static boolean answer;
 
-    public static boolean display() throws FileNotFoundException {
+    public static boolean display() {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Connection Settings");

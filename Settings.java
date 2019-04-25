@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.text.ParseException;
 
-public class Settings {
+public class Settings implements Serializable {
 
 
     public int gridSize,
