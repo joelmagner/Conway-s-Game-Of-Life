@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 import javafx.scene.*;
@@ -35,24 +34,26 @@ public class Client extends Application implements Initializable {
 	private void connectToServer() {
 		try {
 			Settings settings = new Settings();
-			Grid newGrid = new Grid(20, 20, 15); //will have to do for now...
-			Socket socketConnection = new Socket(settings.ipAddress, settings.port);
+			Socket socket = new Socket("127.0.0.1", 5000);
 
+			//obj-streams
+			ObjectInputStream clientInputStream = new ObjectInputStream(socket.getInputStream());
+			//str-streams
+			DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+			// Send first message
+			dOut.writeByte(1);
+			dOut.writeUTF("20:20:15"); //gridsettings
+			dOut.flush(); // Send off the data
 
-			ObjectOutputStream clientOutputStream = new ObjectOutputStream(socketConnection.getOutputStream());
-			ObjectInputStream clientInputStream = new ObjectInputStream(socketConnection.getInputStream());
+			this.grid = (Grid) clientInputStream.readObject();
 
-			clientOutputStream.writeObject(newGrid);
+			System.out.println("new grid! ");
+			new Render(this.grid);
+			this.group.getChildren().addAll(this.grid.p);
 
-			newGrid = (Grid) clientInputStream.readObject();
-
-			//i'm assuming that I need to retrive a grid-object here,
-			//and just call "new Render(newGrid);"
-			//afterwards, send a new grid-request from server,
-
-			clientOutputStream.close();
 			clientInputStream.close();
-
+			dOut.writeByte(-1);
+			dOut.close();
 		} catch (Exception e) {
 			System.out.println(e);
 		}

@@ -1,5 +1,4 @@
 package src;
-
 import javafx.scene.paint.Color;
 
 public class Square {
