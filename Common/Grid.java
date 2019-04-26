@@ -36,4 +36,5 @@ public class Grid implements Serializable {
 	public void setGridSize(int gridSize) {
 		this.gridSize = gridSize;
 	}
+
 }

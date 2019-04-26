@@ -4,6 +4,8 @@ import Common.Grid;
 import Common.Square;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+
 public class GameManager {
 
     public Grid round(Grid g){

@@ -25,7 +25,7 @@ public class Render implements Serializable {
 
             rect.setFill(Color.valueOf(square.getSquareFill()));
 
-            rect.setStroke(Color.BLACK);
+            rect.setStroke(Color.valueOf("#9E9E9E"));
             p.setTranslateY(37);
             p.getChildren().add(rect);
         }

@@ -9,7 +9,7 @@
 
 <VBox prefHeight="400.0" prefWidth="640.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
   <children>
-    <MenuBar style="-fx-background-insets: 0 0 0 0; -fx-background-color: #1abc9c; -fx-min-height: 35;" VBox.vgrow="NEVER">
+    <MenuBar fx:id="menuBarItem" style="-fx-background-insets: 0 0 0 0; -fx-background-color: #1abc9c; -fx-min-height: 35;" VBox.vgrow="NEVER">
       <menus>
         <Menu fx:id="connectionMenu" mnemonicParsing="false" text="Connection">
           <items>
@@ -18,19 +18,27 @@
             <MenuItem fx:id="closeConnection" mnemonicParsing="false" text="Close Connection" />
           </items>
         </Menu>
+        <Menu mnemonicParsing="false" text="Communication">
+          <items>
+            <MenuItem fx:id="playMenuItem" mnemonicParsing="false" text="New Game" />
+            <MenuItem fx:id="nextRoundMenuItem" mnemonicParsing="false" text="Next Round" />
+            <Menu mnemonicParsing="false" text="Controls">
+              <MenuItem fx:id="pauseMenuItem" mnemonicParsing="false" text="Pause" />
+              <MenuItem fx:id="resumeMenuItem" mnemonicParsing="false" text="Resume" />
+              <MenuItem fx:id="resetMenuItem" mnemonicParsing="false"  text="Reset" />
+            </Menu>
+            <MenuItem fx:id="skipRoundsMenuItem" mnemonicParsing="false" text="Skip X Rounds" />
+          </items>
+        </Menu>
         <Menu mnemonicParsing="false" text="Settings">
           <items>
             <MenuItem fx:id="optionsMenuItem" mnemonicParsing="false" text="Options" />
             <MenuItem fx:id="predefMenuItem" mnemonicParsing="false" text="Predefs" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Communication">
+        <Menu mnemonicParsing="false" text="About">
           <items>
-            <MenuItem fx:id="playMenuItem" mnemonicParsing="false" text="New Game" />
-            <MenuItem fx:id="nextRoundMenuItem" mnemonicParsing="false" text="Next Round" />
-            <MenuItem fx:id="pauseMenuItem" mnemonicParsing="false" text="Pause" />
-            <MenuItem fx:id="resumeMenuItem" mnemonicParsing="false" text="Resume" />
-            <MenuItem fx:id="resetMenuItem" mnemonicParsing="false"  text="Reset                " />
+            <MenuItem fx:id="infoMenuItem" mnemonicParsing="false" text="About" />
           </items>
         </Menu>
       </menus>

@@ -14,7 +14,7 @@ public class Settings implements Serializable {
                 squareSize,
                 spawnChance,
                 port;
-    public String ipAddress;
+    public String ipAddress, preDefs = "PREDEFS";
     public static final String settingsFilePath="settings.txt",
                     connectionFilePath="conn.txt";
     public Settings(){
@@ -34,6 +34,10 @@ public class Settings implements Serializable {
         writer.close();
         System.out.println("Saved settings to file!");
 
+    }
+
+    public String getGridSettings(){
+        return this.gridSize+":"+this.squareSize+":"+this.spawnChance+this.preDefs;
     }
 
     public void readSettingsFromFile(String filepath){

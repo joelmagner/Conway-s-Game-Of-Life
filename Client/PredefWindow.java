@@ -16,9 +16,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class PredefWindow {
-    static ArrayList<String> preDefValues;
+    static String preDefValues;
 
-    public static ArrayList<String> display() {
+    public static String display() {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Options");
@@ -30,15 +30,15 @@ public class PredefWindow {
         s.readSettingsFromFile(s.settingsFilePath);
 
         //Custom values
-        HBox predefBox = new HBox();
-        predefBox.setPadding(new Insets(10,10,10,10));
-        predefBox.setSpacing(10);
-        Label labelPredef = new Label("predef format X:Y x:y");
+        HBox preDefBox = new HBox();
+        preDefBox.setPadding(new Insets(10,10,10,10));
+        preDefBox.setSpacing(10);
+        Label labelPredef = new Label("eg. 0x0 0x1");
         labelPredef.setStyle("-fx-fill:#ecf0f1;");
         TextField preDef = new TextField();
         labelPredef.setPrefSize(100,20);
         preDef.setPrefSize(210,20);
-        predefBox.getChildren().addAll(labelPredef,preDef);
+        preDefBox.getChildren().addAll(labelPredef,preDef);
 
 
         HBox confirmBox = new HBox();
@@ -54,13 +54,7 @@ public class PredefWindow {
         confirmBox.getChildren().addAll(confirmLabel,yesBtn,noBtn);
 
         yesBtn.setOnAction(e -> {
-            ArrayList<String> xs = new ArrayList<String>();
-            ArrayList<String> ys = new ArrayList<String>();
-            for(String item : preDef.getText().split(" ")){
-                xs.add(item.split(":")[0]);
-                ys.add(item.split(":")[1]);
-                System.out.println("X: " + item.split(":")[0] +" Y: " + item.split(":")[1]);
-            }
+            preDefValues = preDef.getText();
 
 
             window.close();
@@ -73,7 +67,7 @@ public class PredefWindow {
 
         VBox layout = new VBox(10);
         layout.setStyle("-fx-background:#34495e;");
-        layout.getChildren().addAll(predefBox,confirmBox);
+        layout.getChildren().addAll(preDefBox,confirmBox);
         layout.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(layout);
