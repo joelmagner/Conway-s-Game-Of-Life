@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #ffffff;" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+  <children>
+      <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #16a085;">
+         <children>
+            <Text fill="WHITE" layoutX="77.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Conway's Game of Life">
+               <font>
+                  <Font name="Arial Bold" size="30.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+    <MenuBar fx:id="menuBarItem" style="-fx-background-insets: 0 0 0 0; -fx-background-color: #1abc9c; -fx-min-height: 35;">
+      <menus>
+        <Menu fx:id="connectionMenu" mnemonicParsing="false" text="Connection">
+          <items>
+            <MenuItem fx:id="openConnection" mnemonicParsing="false" text="Quick Connect" />
+            <MenuItem fx:id="saveConnection" mnemonicParsing="false" text="Connection Settings" />
+            <MenuItem fx:id="closeConnection" mnemonicParsing="false" text="Close Connection" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Communication">
+          <items>
+            <MenuItem fx:id="playMenuItem" mnemonicParsing="false" text="New Game" />
+            <MenuItem fx:id="nextRoundMenuItem" mnemonicParsing="false" text="Next Round" />
+            <Menu mnemonicParsing="false" text="Controls">
+              <MenuItem fx:id="pauseMenuItem" mnemonicParsing="false" text="Pause" />
+              <MenuItem fx:id="resumeMenuItem" mnemonicParsing="false" text="Resume" />
+              <MenuItem fx:id="resetMenuItem" mnemonicParsing="false" text="Reset" />
+            </Menu>
+            <MenuItem fx:id="skipRoundsMenuItem" mnemonicParsing="false" text="Skip X Rounds" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Settings">
+          <items>
+            <MenuItem fx:id="optionsMenuItem" mnemonicParsing="false" text="Options" />
+            <MenuItem fx:id="predefMenuItem" mnemonicParsing="false" text="Predefs" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="About">
+          <items>
+            <MenuItem fx:id="infoMenuItem" mnemonicParsing="false" text="About" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+      <Button mnemonicParsing="false" text="Button" />
+      <Label fx:id="connectionLabel" prefHeight="60.0" prefWidth="200.0" text="Connection" />
+  </children>
+</VBox>
