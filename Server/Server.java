@@ -50,11 +50,15 @@ public class Server {
 							gridSize = Integer.parseInt(gridInfo.split(":")[0]);
 							squareSize = Integer.parseInt(gridInfo.split(":")[1]);
 							spawnChance = Integer.parseInt(gridInfo.split(":")[2]);
-							String preDefs = message.split("PREDEFS")[1];
-
+							String preDefs = "";
+							try {
+								preDefs = message.split("PREDEFS")[1];
+							} catch(Exception ex){
+								/*dont do anything */
+							}
 							grid = new Grid(gridSize, squareSize, spawnChance);
 							grid = gm.round(grid);
-
+							System.out.println("round done now!");
 							if(preDefs.length() > 1){
 								for (String xy : preDefs.split(" ")) {
 									int x = 0, y = 0, newPre = 0;
@@ -81,6 +85,7 @@ public class Server {
 									}
 								}
 							}
+							System.out.println("sending obj now!");
 							serverOutputStream.writeObject(grid);
 							break;
 						case 2: // next round
