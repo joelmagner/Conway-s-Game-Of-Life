@@ -8,12 +8,13 @@ import javafx.scene.paint.Color;
 
 public class Grid implements Serializable {
 	public ArrayList<Square> grid = new ArrayList<Square>();
-	int gridSize;
+	int gridSize, squareSize;
 
 	public Grid(){}
 
 	public Grid(int gridSize, int squareSize, double spawnChance) {
 		this.gridSize = gridSize;
+		this.squareSize = squareSize;
 		for (int i = 0; i < gridSize; i++) {
 			for (int j = 0; j < gridSize; j++) {
 				Square square = new Square(i, j, squareSize, Math.random() < spawnChance/100);
@@ -35,6 +36,12 @@ public class Grid implements Serializable {
 	}
 	public void setGridSize(int gridSize) {
 		this.gridSize = gridSize;
+	}
+	public int getSquareSize() {
+		return this.squareSize;
+	}
+	public void setSquareSize(int squareSize) {
+		this.squareSize = squareSize;
 	}
 
 }

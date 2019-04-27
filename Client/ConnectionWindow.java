@@ -1,5 +1,6 @@
 package Client;
 
+import com.jfoenix.controls.JFXTextField;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -33,19 +34,24 @@ public class ConnectionWindow{
         ipAddressBox.setPadding(new Insets(10,10,10,10));
         ipAddressBox.setSpacing(10);
         Label labelIpAddress = new Label("IP Address");
-        TextField ipAddress = new TextField();
+        JFXTextField ipAddress = new JFXTextField();
+        labelIpAddress.getStyleClass().add("label_format");
+        ipAddressBox.getStyleClass().add("hover_row");
         ipAddress.setText(s.ipAddress);
         labelIpAddress.setPrefSize(100,20);
         ipAddress.setPrefSize(210,20);
         ipAddressBox.getChildren().addAll(labelIpAddress,ipAddress);
+
 
         //port
         HBox portBox = new HBox();
         portBox.setPadding(new Insets(10,10,10,10));
         portBox.setSpacing(10);
         Label labelPort = new Label("Port");
-        TextField port = new TextField();
+        JFXTextField port = new JFXTextField();
         port.setText(Integer.toString(s.port));
+        labelPort.getStyleClass().add("label_format");
+        portBox.getStyleClass().add("hover_row");
         labelPort.setPrefSize(100,20);
         port.setPrefSize(210,20);
         portBox.getChildren().addAll(labelPort,port);
@@ -53,14 +59,14 @@ public class ConnectionWindow{
         HBox confirmBox = new HBox();
         confirmBox.setPadding(new Insets(10,10,10,10));
         confirmBox.setSpacing(10);
-        Label confirmLabel = new Label("Save new settings?");
-        Button yesBtn = new Button("Yes");
-        Button noBtn = new Button("No");
+        confirmBox.setAlignment(Pos.CENTER);
+        Button yesBtn = new Button("Save");
+        Button noBtn = new Button("Cancel");
         yesBtn.setPrefSize(100,20);
         noBtn.setPrefSize(100,20);
-        yesBtn.getStyleClass().add("button-success");
-        noBtn.getStyleClass().add("button-danger");
-        confirmBox.getChildren().addAll(confirmLabel,yesBtn,noBtn);
+        yesBtn.getStyleClass().add("confirm_button");
+        noBtn.getStyleClass().add("cancel_button");
+        confirmBox.getChildren().addAll(yesBtn,noBtn);
 
         yesBtn.setOnAction(e -> {
             answer = true;
@@ -83,10 +89,11 @@ public class ConnectionWindow{
         });
 
         VBox layout = new VBox(10);
-        layout.setStyle("-fx-background:#34495e;");
+        layout.setStyle("-fx-background:#ffffff;");
         layout.getChildren().addAll(ipAddressBox,portBox,confirmBox);
         layout.setAlignment(Pos.CENTER);
 
+        window.initStyle(StageStyle.UTILITY);
         Scene scene = new Scene(layout);
         scene.getStylesheets().add("style.css");
         window.setScene(scene);

@@ -1,10 +1,17 @@
 package Client;
 
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.*;
@@ -14,47 +21,11 @@ import java.io.IOException;
 
 public class OptionsWindow{
 
-    static boolean answer;
-    static int value;
-    public static int prompt(){
+    static String preDefValues;
+    static String fileName;
+    static int keyPresses = 0;
+    public static String display() throws FileNotFoundException {
 
-        Stage window = new Stage();
-        window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Enter number");
-        window.setMinWidth(150);
-        window.setMinHeight(150);
-        HBox hbox = new HBox();
-        hbox.setPadding(new Insets(10,10,10,10));
-        hbox.setSpacing(10);
-        TextField input = new TextField();
-        Button acceptBtn = new Button("Accept");
-        acceptBtn.getStyleClass().add("button-success");
-        VBox layout = new VBox(10);
-        layout.setStyle("-fx-background:#34495e;");
-        hbox.getChildren().addAll(input,acceptBtn);
-        layout.getChildren().addAll(hbox);
-        layout.setAlignment(Pos.CENTER);
-
-        Scene scene = new Scene(layout);
-        scene.getStylesheets().add("style.css");
-        window.setScene(scene);
-
-        acceptBtn.setOnAction(e -> {
-            value = Integer.parseInt(input.getText());
-            window.close();
-        });
-        window.showAndWait();
-
-
-        return value;
-    }
-
-    public static boolean display() throws FileNotFoundException {
-        Stage window = new Stage();
-        window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Options");
-        window.setMinWidth(300);
-        window.setMinHeight(250);
 
         //load settings if there are any
         Settings s = new Settings();
@@ -65,8 +36,10 @@ public class OptionsWindow{
         gridSizeBox.setPadding(new Insets(10,10,10,10));
         gridSizeBox.setSpacing(10);
         Label labelGridSize = new Label("Grid Size");
-        labelGridSize.setStyle("-fx-fill:#ecf0f1;");
-        TextField gridSize = new TextField();
+        labelGridSize.setStyle("-fx-text-inner-color:#fff;");
+        labelGridSize.getStyleClass().add("label_format");
+        gridSizeBox.getStyleClass().add("hover_row");
+        JFXTextField gridSize = new JFXTextField();
         gridSize.setText(Integer.toString(s.gridSize));
         labelGridSize.setPrefSize(100,20);
         gridSize.setPrefSize(210,20);
@@ -77,7 +50,9 @@ public class OptionsWindow{
         squareSizeBox.setPadding(new Insets(10,10,10,10));
         squareSizeBox.setSpacing(10);
         Label labelSquareSize = new Label("Square Size");
-        TextField squareSize = new TextField();
+        labelSquareSize.getStyleClass().add("label_format");
+        squareSizeBox.getStyleClass().add("hover_row");
+        JFXTextField squareSize = new JFXTextField();
         squareSize.setText(Integer.toString(s.squareSize));
         labelSquareSize.setPrefSize(100,20);
         squareSize.setPrefSize(210,20);
@@ -88,26 +63,92 @@ public class OptionsWindow{
         spawnChanceBox.setPadding(new Insets(10,10,10,10));
         spawnChanceBox.setSpacing(10);
         Label labelSpawnChance = new Label("Spawn %");
-        TextField spawnChance = new TextField();
+        labelSpawnChance.getStyleClass().add("label_format");
+        spawnChanceBox.getStyleClass().add("hover_row");
+        JFXTextField spawnChance = new JFXTextField();
         spawnChance.setText(Integer.toString(s.spawnChance));
         labelSpawnChance.setPrefSize(100,20);
         spawnChance.setPrefSize(210,20);
         spawnChanceBox.getChildren().addAll(labelSpawnChance,spawnChance);
 
+        HBox preDefBox = new HBox();
+        preDefBox.setPadding(new Insets(0,10,10,10));
+        preDefBox.setSpacing(10);
+        Label labelPredef = new Label("Predefine");
+        labelPredef.getStyleClass().add("label_format");
+        preDefBox.getStyleClass().add("hover_row");
+        JFXTextArea preDef = new JFXTextArea();
+
+        preDef.setOnKeyReleased(e -> {
+            if(e.getCode() != KeyCode.BACK_SPACE){
+                keyPresses++;
+                switch(keyPresses){
+                    case 1:
+                        preDef.setText(preDef.getText()+"x");
+                        break;
+                    case 2:
+                        preDef.setText(preDef.getText()+" ");
+                        keyPresses=0;
+                        break;
+                    default:
+                        break;
+                }
+                preDef.selectPositionCaret(preDef.getText().length()+1);
+                preDef.deselect();
+            }
+        });
+        FontAwesomeIconView savePreDefToFileBtn = new FontAwesomeIconView();
+        savePreDefToFileBtn.setGlyphName("CLOUD_DOWNLOAD");
+        savePreDefToFileBtn.setSize("2em");
+        savePreDefToFileBtn.setStyle("-fx-fill:#2ecc71");
+        labelPredef.setPrefSize(100,20);
+        preDef.setPrefSize(210,20);
+        preDefBox.setAlignment(Pos.BOTTOM_CENTER);
+        preDefBox.getChildren().addAll(labelPredef,preDef, savePreDefToFileBtn);
+
         HBox confirmBox = new HBox();
         confirmBox.setPadding(new Insets(10,10,10,10));
         confirmBox.setSpacing(10);
-        Label confirmLabel = new Label("Save new settings?");
-        Button yesBtn = new Button("Yes");
-        Button noBtn = new Button("No");
+        confirmBox.setAlignment(Pos.CENTER);
+        Button yesBtn = new Button("Save");
+        Button noBtn = new Button("Cancel");
         yesBtn.setPrefSize(100,20);
         noBtn.setPrefSize(100,20);
-        yesBtn.getStyleClass().add("button-success");
-        noBtn.getStyleClass().add("button-danger");
-        confirmBox.getChildren().addAll(confirmLabel,yesBtn,noBtn);
+        yesBtn.getStyleClass().add("confirm_button");
+        noBtn.getStyleClass().add("cancel_button");
+        confirmBox.getChildren().addAll(yesBtn,noBtn);
+
+        Stage window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setMinWidth(300);
+        window.setMinHeight(250);
+
+        Stage saveToFileWindow = new Stage();
+        saveToFileWindow.initModality(Modality.APPLICATION_MODAL);
+        saveToFileWindow.setMinWidth(300);
+        saveToFileWindow.setMinHeight(250);
+        Button save = new Button("SAVE");
+        JFXTextField inputField = new JFXTextField();
+
+        savePreDefToFileBtn.setOnMouseClicked(e -> {
+            saveToFileWindow.show();
+            save.setOnAction(click -> {
+                Platform.runLater(() -> {
+                    fileName = inputField.getText();
+                    try {
+                        preDefValues = preDef.getText();
+                        s.writePreDefToFile(fileName+":"+preDefValues,s.preDefsFilePath);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+
+                });
+                saveToFileWindow.close();
+            });
+        });
+
 
         yesBtn.setOnAction(e -> {
-            answer = true;
             String[] newSettings = new String[]
             {
                 "gridsize:"+gridSize.getText(),
@@ -119,24 +160,42 @@ public class OptionsWindow{
             } catch(IOException ex){
                 ex.printStackTrace();
             }
+            preDefValues = preDef.getText();
             window.close();
         });
 
         noBtn.setOnAction(e -> {
-            answer = false;
             window.close();
         });
 
+
+
+
+        VBox saveToFileLayout = new VBox(10);
+        saveToFileLayout.setAlignment(Pos.CENTER);
+        saveToFileLayout.getChildren().addAll(inputField,save);
+        saveToFileLayout.setStyle("-fx-background:#fff;");
+        Scene saveFileScene = new Scene(saveToFileLayout);
+        saveFileScene.getStylesheets().add("style.css");
+        saveToFileWindow.initStyle(StageStyle.UTILITY);
+        saveToFileWindow.setTitle("Filename...");
+        save.getStyleClass().add("confirm_button");
+        saveToFileWindow.setScene(saveFileScene);
+
+
+
+
         VBox layout = new VBox(10);
-        layout.setStyle("-fx-background:#34495e;");
-        layout.getChildren().addAll(gridSizeBox,squareSizeBox,spawnChanceBox,confirmBox);
+        layout.setStyle("-fx-background:#fff;");
+        layout.getChildren().addAll(gridSizeBox,squareSizeBox,spawnChanceBox,preDefBox,confirmBox);
         layout.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(layout);
         scene.getStylesheets().add("style.css");
+        window.initStyle(StageStyle.UTILITY);
         window.setScene(scene);
         window.showAndWait();
 
-        return answer;
+        return preDefValues;
     }
 }

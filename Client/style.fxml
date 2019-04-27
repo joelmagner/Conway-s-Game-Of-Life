@@ -1,52 +1,192 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
-  <children>
-    <MenuBar fx:id="menuBarItem" style="-fx-background-insets: 0 0 0 0; -fx-background-color: #1abc9c; -fx-min-height: 35;" VBox.vgrow="NEVER">
-      <menus>
-        <Menu fx:id="connectionMenu" mnemonicParsing="false" text="Connection">
-          <items>
-            <MenuItem fx:id="openConnection" mnemonicParsing="false" text="Quick Connect" />
-            <MenuItem fx:id="saveConnection" mnemonicParsing="false" text="Connection Settings" />
-            <MenuItem fx:id="closeConnection" mnemonicParsing="false" text="Close Connection" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Communication">
-          <items>
-            <MenuItem fx:id="playMenuItem" mnemonicParsing="false" text="New Game" />
-            <MenuItem fx:id="nextRoundMenuItem" mnemonicParsing="false" text="Next Round" />
-            <Menu mnemonicParsing="false" text="Controls">
-              <MenuItem fx:id="pauseMenuItem" mnemonicParsing="false" text="Pause" />
-              <MenuItem fx:id="resumeMenuItem" mnemonicParsing="false" text="Resume" />
-              <MenuItem fx:id="resetMenuItem" mnemonicParsing="false"  text="Reset" />
-            </Menu>
-            <MenuItem fx:id="skipRoundsMenuItem" mnemonicParsing="false" text="Skip X Rounds" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Settings">
-          <items>
-            <MenuItem fx:id="optionsMenuItem" mnemonicParsing="false" text="Options" />
-            <MenuItem fx:id="predefMenuItem" mnemonicParsing="false" text="Predefs" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="About">
-          <items>
-            <MenuItem fx:id="infoMenuItem" mnemonicParsing="false" text="About" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+<BorderPane fx:id="mainWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="300.0" minWidth="600.0" prefHeight="300.0" prefWidth="600.0" style="-fx-background-color: #dddddd;" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <left>
+      <HBox maxWidth="-Infinity" prefWidth="166.0" BorderPane.alignment="CENTER">
          <children>
-            <Canvas height="374.0" layoutX="121.0" width="370.0" />
+            <VBox maxWidth="-Infinity" prefWidth="166.0" style="-fx-background-color: #ffffff;">
+               <children>
+                  <HBox fx:id="connectToServerButton" alignment="CENTER_LEFT" styleClass="hover_border">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets top="40.0" />
+                     </VBox.margin>
+                     <children>
+                        <FontAwesomeIconView fx:id="connectionIndicator" fill="#485460" glyphName="POWER_OFF" size="1.5em" styleClass="text">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </FontAwesomeIconView>
+                        <Text fx:id="connectionButtonText" fill="#485460" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Quicksand; -fx-font-weight: bold; -fx-font-size: 9pt;" styleClass="text" text="Connection">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <HBox fx:id="communicationMenuButton" alignment="CENTER_LEFT">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <children>
+                        <FontAwesomeIconView fill="#485460" glyphName="COMMENTS" size="1.5em" styleClass="text">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin></FontAwesomeIconView>
+                        <Text fill="#485460" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Quicksand; -fx-font-weight: bold; -fx-font-size: 9pt;" styleClass="text" text="Communication">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Text>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                     <styleClass>
+                        <String fx:value="hover_border" />
+                        <String fx:value="text" />
+                     </styleClass>
+                  </HBox>
+                  <HBox fx:id="controlsMenuButton" alignment="CENTER_LEFT" styleClass="hover_border">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <children>
+                        <FontAwesomeIconView fill="#485460" glyphName="GAMEPAD" size="1.5em" styleClass="text">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin></FontAwesomeIconView>
+                        <Text fill="#485460" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Quicksand; -fx-font-weight: bold; -fx-font-size: 9pt;" styleClass="text" text="Controls">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Text>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <VBox alignment="BOTTOM_CENTER" maxWidth="-Infinity" prefWidth="166.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <HBox fx:id="settingsButton" alignment="CENTER_LEFT" styleClass="hover_border">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <children>
+                              <FontAwesomeIconView fill="#485460" glyphName="COG" size="1.5em" styleClass="text">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin></FontAwesomeIconView>
+                              <Text fill="#485460" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Quicksand; -fx-font-weight: bold; -fx-font-size: 9pt;" styleClass="text" text="Settings">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Text>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
          </children>
-    </AnchorPane>
-  </children>
-</VBox>
+      </HBox>
+   </left>
+   <top>
+      <HBox BorderPane.alignment="CENTER">
+         <children>
+            <HBox fx:id="banner_area" alignment="CENTER" prefWidth="166.0" styleClass="banner_area">
+               <children>
+                  <FontAwesomeIconView fill="WHITE" glyphName="ADJUST" size="2.4em" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: Quicksand; -fx-font-weight: bold; -fx-fill: white;" text="Game of Life">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #ffffff;" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="39.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefWidth="209.0" spacing="20.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <FontAwesomeIconView fx:id="createGridButton" fill="#485460" glyphName="PLUS_SQUARE" size="1.6em" styleClass="control_buttons">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </FontAwesomeIconView>
+                              <FontAwesomeIconView fx:id="continuousPlayButton" fill="#485460" glyphName="PLAY_CIRCLE" size="1.6em" styleClass="control_buttons" />
+                              <FontAwesomeIconView fx:id="nextRoundButton" fill="#485460" glyphName="FORWARD" size="1.5em" styleClass="control_buttons" />
+                              <FontAwesomeIconView fx:id="skipXRoundsButton" fill="#485460" glyphName="FAST_FORWARD" size="1.5em" styleClass="control_buttons" />
+                              <FontAwesomeIconView fx:id="restoreGridButton" fill="#485460" glyphName="REPEAT" scaleX="-1.0" size="1.5em" styleClass="control_buttons" />
+                              <JFXTextField fx:id="inputTextField" focusColor="#1abc9c" prefWidth="30.0" />
+                              <FontAwesomeIconView fx:id="inputTextSubmitButton" fill="#1abc9c" glyphName="CHECK_SQUARE" size="1.5em" styleClass="button_active" />
+                           </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </HBox>
+                        <Text fx:id="goToMyWebsite" strokeType="OUTSIDE" strokeWidth="0.0" text="Joel Magnér">
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Quicksand Regular" size="10.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="cursor_hand" />
+                              <String fx:value="hover_name" />
+                           </styleClass>
+                        </Text>
+                        <FontAwesomeIconView fx:id="goToGithub" fill="#485460" glyphName="GITHUB" size="2EM">
+                           <styleClass>
+                              <String fx:value="cursor_hand" />
+                              <String fx:value="hover_git" />
+                           </styleClass>
+                        </FontAwesomeIconView>
+                     </children>
+                  </HBox>
+                  <HBox alignment="TOP_RIGHT" prefHeight="70.0" prefWidth="43.0" HBox.hgrow="NEVER">
+                     <children>
+                        <JFXButton fx:id="exitButton" styleClass="exit_button" text="X" textFill="WHITE">
+                           <font>
+                              <Font name="Calibri Bold" size="12.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <BorderPane fx:id="pane" style="-fx-background-color: #cccccc;" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
+      </BorderPane>
+   </center>
+</BorderPane>

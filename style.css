@@ -1,30 +1,152 @@
 
-.menu-item .label{
-    -fx-text-fill: white;
-}
-.context-menu {
-   -fx-background-color: #16a085;
+
+.hover_border:hover {
+    -fx-border-color: #2f3640;
+    -fx-border-width: 0px 0px 0px 4px;
+    -fx-background-color:  #1abc9c;
+    -fx-cursor:hand;
+    -fx-padding: 10px 10px 10px 6px;
 }
 
-.menu .label{
-    -fx-text-fill: white;
-    -fx-font-size:8pt;
-    -fx-padding:4pt;
-}
-.items .menuItem {
-    -fx-background-color:#2ecc71;
+.hover_row{
+    -fx-padding: 20px 10px 20px 6px;
+
 }
 
-.button-success{
-    -fx-background-color:#2ecc71;
-    -fx-text-fill:#fff;
+.hover_row:hover {
+    -fx-border-color: #2f3640;
+    -fx-border-width: 0px 0px 0px 4px;
+    -fx-cursor:hand;
+    -fx-padding:20px 10px 20px 2px;
+}
+
+.label_format{
+    -fx-font-family:Quicksand;
+    -fx-font-size:9pt;
+    -fx-padding:0px 0px 0px 20px;
+}
+
+.text .green_fill{
+    -fx-fill: #F44336;
+}
+
+.button_enabled_from_disabled {
+    -fx-fill:#fbc531;
+}
+.button_enabled_from_disabled {
+    -fx-fill:#e1b12c;
+}
+
+.connection_status_on{
+    -fx-fill: #fff;
+    -fx-background-color: #fbc531;
+}
+.connection_status_off{
+    -fx-fill: #fff;
+    -fx-background-color: #e84118;
+}
+.hover_name{
+    -fx-fill:#485460;
+    -fx-font-family: Quicksand;
+    -fx-font-weight: bold;
+    -fx-font-size: 9pt;
+}
+.hover_name:hover{
+    -fx-fill:#1abc9c;
+    -fx-background-color:#1abc9c;
+}
+.banner_area{
+    -fx-background-color: #1abc9c;
+}
+
+.banner_area:hover{
+    -fx-background-color: #0097e6;
+}
+
+.hover_border:hover .text{
+    -fx-fill: #fff;
+}
+
+.exit_button{
+    -fx-fill:#FFFFFF;
+    -fx-background-color:#e84118;
     -fx-background-radius:0;
 }
-.button-danger{
+
+.exit_button:hover{
+    -fx-background-color:#95a5a6;
+    -fx-fill:#ffffff;
+}
+
+.accept_button{
+    -fx-fill: #fff;
+    -fx-background-color:#44bd32;
+    -fx-background-radius:0;
+    -fx-padding:10px 30px 10px 30px;
+    -fx-text-fill: #fff;
+}
+
+.accept_button:hover{
+    -fx-background-color:#4cd137;
+}
+
+.button_active{
+    -fx-fill:#4cd137;
+}
+.button_active:hover{
+    -fx-fill:#44bd32;
+}
+
+.control_buttons:hover{
+    -fx-fill:#95a5a6;
+}
+
+.hover_git:hover{
+    -fx-fill: #1abc9c;
+}
+
+.cursor_hand {
+    -fx-cursor:hand;
+}
+
+.confirm_button{
+    -fx-fill: #fff;
+    -fx-background-color:#2ecc71;
+    -fx-background-radius:0;
+    -fx-padding:10px 30px 10px 30px;
+    -fx-text-fill: #fff;
+}
+
+.confirm_button:hover{
+    -fx-background-color:#27ae60;
+}
+
+.cancel_button{
+    -fx-fill: #fff;
     -fx-background-color:#e74c3c;
-    -fx-text-fill:#fff;
     -fx-background-radius:0;
+    -fx-padding:10px 30px 10px 30px;
+    -fx-text-fill: #fff;
 }
-.menu-item:focused .label {
-    -fx-text-fill: white;
+
+.cancel_button:hover{
+    -fx-background-color:#c0392b;
+}
+
+.download_button{
+  -fx-background-color:#2ecc71;
+    -fx-fill:#27ae60;
+}
+.download_button:hover{
+  -fx-background-color:#2ecc71;
+    -fx-fill:#1abc9c;
+}
+.options_button{
+    -fx-padding:10px 30px 10px 30px;
+    -fx-background-radius:0;
+    -fx-background-color:#2c3e50;
+    -fx-text-fill: #fff;
+}
+.options_button:hover{
+    -fx-background-color:#34495e;
 }

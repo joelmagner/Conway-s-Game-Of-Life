@@ -1,5 +1,6 @@
 package Client;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,6 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,60 +23,61 @@ public class PredefWindow {
     public static String display() {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Options");
+        window.setTitle("Select Predefine");
         window.setMinWidth(300);
         window.setMinHeight(250);
 
+
+        HBox preDefBox = new HBox();
+        preDefBox.setPadding(new Insets(0,0,10,0));
+
+
         //load settings if there are any
         Settings s = new Settings();
-        s.readSettingsFromFile(s.settingsFilePath);
-
-        //Custom values
-        HBox preDefBox = new HBox();
-        preDefBox.setPadding(new Insets(10,10,10,10));
-        preDefBox.setSpacing(10);
-        Label labelPredef = new Label("eg. 0x0 0x1");
-        labelPredef.setStyle("-fx-fill:#ecf0f1;");
-        TextField preDef = new TextField();
-        labelPredef.setPrefSize(100,20);
-        preDef.setPrefSize(210,20);
-        preDefBox.getChildren().addAll(labelPredef,preDef);
+        ArrayList<String> preDefs = s.readPreDefFromFile(s.preDefsFilePath);
 
 
-        HBox confirmBox = new HBox();
-        confirmBox.setPadding(new Insets(10,10,10,10));
-        confirmBox.setSpacing(10);
-        Label confirmLabel = new Label("Save new settings?");
-        Button yesBtn = new Button("Yes");
-        Button noBtn = new Button("No");
-        yesBtn.setPrefSize(100,20);
-        noBtn.setPrefSize(100,20);
-        yesBtn.getStyleClass().add("button-success");
-        noBtn.getStyleClass().add("button-danger");
-        confirmBox.getChildren().addAll(confirmLabel,yesBtn,noBtn);
 
-        yesBtn.setOnAction(e -> {
-            preDefValues = preDef.getText();
-
-
-            window.close();
-        });
-
-        noBtn.setOnAction(e -> {
-
-            window.close();
-        });
 
         VBox layout = new VBox(10);
-        layout.setStyle("-fx-background:#34495e;");
-        layout.getChildren().addAll(preDefBox,confirmBox);
-        layout.setAlignment(Pos.CENTER);
+        layout.setStyle("-fx-background:#fff;");
+        layout.getChildren().addAll(preDefBox);
 
         Scene scene = new Scene(layout);
         scene.getStylesheets().add("style.css");
+
+
+        for(String entry : preDefs){
+            String fileName = entry.split(":")[0];
+            String values = entry.split(":")[1];
+            HBox placeholder = new HBox();
+
+            Button preDefButton = new Button(fileName);
+            Button deleteButton = new Button("X");
+            placeholder.getChildren().addAll(preDefButton,deleteButton);
+            preDefButton.getStyleClass().add("options_button");
+            deleteButton.getStyleClass().add("cancel_button");
+            preDefButton.setPrefWidth(250);
+            layout.getChildren().add(placeholder);
+            preDefButton.setOnAction(e -> {
+               preDefValues = values;
+               window.close();
+            });
+            deleteButton.setOnAction(e -> {
+                try {
+                    s.deletePreDefFromFile(fileName,s.preDefsFilePath);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                Platform.runLater(() -> layout.getChildren().remove(placeholder));
+            });
+        }
+
+
+        layout.setAlignment(Pos.CENTER);
+        window.initStyle(StageStyle.UTILITY);
         window.setScene(scene);
         window.showAndWait();
-
 
         return preDefValues;
     }
