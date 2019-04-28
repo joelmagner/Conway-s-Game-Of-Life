@@ -28,6 +28,36 @@ public class Server {
 		}
 	}
 
+
+	private static void addPreDefsToGrid(String preDefinedValues){
+		if(preDefinedValues.length() > 1){
+			for (String xy : preDefinedValues.split(" ")) {
+				int x = 0, y = 0, newPre = 0;
+				for (String v : xy.split("x")) {
+					newPre++;
+					switch (newPre) {
+						case 1:
+							x = Integer.parseInt(v);
+							break;
+						case 2:
+							y = Integer.parseInt(v);
+							for (Square s : grid.getGrid()) {
+								if (s.getSquareX() == x && s.getSquareY() == y) {
+									s.setSquareFill("#DDDDDD");
+									s.setSquareStatus(true);
+									grid.setGrid(grid.grid);
+								}
+							}
+							newPre = 0;
+							break;
+						default:
+							break;
+					}
+				}
+			}
+		}
+	}
+
 	private static void performTask(Socket socket) throws IOException{
 
 		ObjectOutputStream serverOutputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -58,43 +88,16 @@ public class Server {
 							}
 							grid = new Grid(gridSize, squareSize, spawnChance);
 							grid = gm.round(grid);
-							System.out.println("round done now!");
-							if(preDefs.length() > 1){
-								for (String xy : preDefs.split(" ")) {
-									int x = 0, y = 0, newPre = 0;
-									for (String v : xy.split("x")) {
-										newPre++;
-										switch (newPre) {
-											case 1:
-												x = Integer.parseInt(v);
-												break;
-											case 2:
-												y = Integer.parseInt(v);
-												for (Square s : grid.getGrid()) {
-													if (s.getSquareX() == x && s.getSquareY() == y) {
-														s.setSquareFill("#DDDDDD");
-														s.setSquareStatus(true);
-														grid.setGrid(grid.grid);
-													}
-												}
-												newPre = 0;
-												break;
-											default:
-												break;
-										}
-									}
-								}
-							}
+							addPreDefsToGrid(preDefs);
 							System.out.println("sending obj now!");
 							serverOutputStream.writeObject(grid);
 							break;
 						case 2: // next round
 							serverOutputStream.reset();
-							System.out.println("next round: " + dIn.readUTF());
-
+							String preDefinedValues = dIn.readUTF();
 							grid = gm.round(grid);
+							addPreDefsToGrid(preDefinedValues);
 							serverOutputStream.writeObject(grid);
-
 							break;
 						case 3: // next X rounds
 							serverOutputStream.reset();

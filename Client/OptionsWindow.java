@@ -178,7 +178,7 @@ public class OptionsWindow{
         Scene saveFileScene = new Scene(saveToFileLayout);
         saveFileScene.getStylesheets().add("style.css");
         saveToFileWindow.initStyle(StageStyle.UTILITY);
-        saveToFileWindow.setTitle("Filename...");
+        saveToFileWindow.setTitle("Save Predefine as...");
         save.getStyleClass().add("confirm_button");
         saveToFileWindow.setScene(saveFileScene);
 

@@ -28,7 +28,9 @@ public class Client extends Application implements Initializable, Serializable {
 
 
 
-	@FXML private BorderPane pane;
+	private static final long serialVersionUID = 1L;
+	@FXML
+	private BorderPane pane;
 	@FXML private JFXButton exitButton;
 	@FXML private FontAwesomeIconView createGridButton;
 	@FXML private FontAwesomeIconView connectionIndicator;
@@ -44,7 +46,6 @@ public class Client extends Application implements Initializable, Serializable {
 	@FXML private HBox connectToServerButton;
 	@FXML private HBox communicationMenuButton;
 	@FXML private HBox controlsMenuButton;
-	@FXML private Text connectionBtnText;
 	@FXML private BorderPane mainWindow;
 	@FXML private JFXTextField inputTextField;
 	private Parent root;
@@ -60,7 +61,7 @@ public class Client extends Application implements Initializable, Serializable {
 	public boolean infinitePlay = false;
 	private String preDefinedValues = null;
 	private static double windowX, windowY;
-	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+	private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
 	public void setBackupGrid(){
 		this.grid = this.backupGrid;
@@ -95,9 +96,18 @@ public class Client extends Application implements Initializable, Serializable {
 	private void setButtonStatus(FontAwesomeIconView button, boolean status){
 		if(status){
 			button.getStyleClass().add("button_active");
+			this.continuousPlayButton.setGlyphName("PLAY");
 		}else {
+			this.continuousPlayButton.setGlyphName("PAUSE");
 			button.getStyleClass().remove("button_active");
 		}
+	}
+	private void clearConnectionStatus(){
+		connectionButtonText.setText("Disconnected");
+		connectionButtonText.getStyleClass().remove("connection_status_on");
+		connectToServerButton.getStyleClass().remove("connection_status_on");
+		createGridButton.getStyleClass().remove("button_enabled_from_disabled");
+		connectionIndicator.getStyleClass().remove("connection_status_on");
 	}
 	private void setConnectionStatus(boolean status){
 		this.connected = status;
@@ -136,7 +146,7 @@ public class Client extends Application implements Initializable, Serializable {
 			this.ois.close();
 			this.dos.close();
 			System.out.println("Connection closed!");
-			this.setConnectionStatus(false);
+			this.clearConnectionStatus();
 		}catch(IOException ex){
 			this.setConnectionStatus(false);
 			ex.printStackTrace();
@@ -144,21 +154,24 @@ public class Client extends Application implements Initializable, Serializable {
 	}
 
 	private void getGridFromServer() throws IOException{
-
 		try{
 			if(!this.connected) return;
 
 			Settings s = new Settings();
 			s.readSettingsFromFile(s.settingsFilePath);
 			this.dos.writeByte(1);
-			if (preDefinedValues == null){ this.dos.writeUTF(s.getGridSettings());
-			} else { this.dos.writeUTF(s.getGridSettings()+preDefinedValues); }
+			if (preDefinedValues == null){
+				this.dos.writeUTF(s.getGridSettings());
+			} else {
+				this.dos.writeUTF(s.getGridSettings()+preDefinedValues);
+			}
 			this.dos.flush();
 			this.grid = (Grid) this.ois.readObject();
 			this.backupGrid = this.grid;
 			this.resizeWindow(s);
 			Platform.runLater(() -> setMainPane(render.render(grid)));
 		} catch(ClassNotFoundException ex){
+			setConnectionStatus(false);
 			ex.printStackTrace();
 		}
 	}
@@ -166,11 +179,17 @@ public class Client extends Application implements Initializable, Serializable {
 		try{
 			if(!this.connected) return;
 			this.dos.writeByte(2);
-			this.dos.writeUTF("New round please");
+			if (preDefinedValues != null){
+				this.dos.writeUTF(this.preDefinedValues);
+				this.preDefinedValues = "";
+			}else{
+				this.dos.writeUTF("");
+			}
 			this.dos.flush();
 			this.grid = (Grid) this.ois.readObject();
 			Platform.runLater(() ->  setMainPane(render.render(this.grid)));
 		} catch(ClassNotFoundException ex){
+			setConnectionStatus(false);
 			ex.printStackTrace();
 		}
 	}
@@ -185,22 +204,21 @@ public class Client extends Application implements Initializable, Serializable {
 			setMainPane(render.render(this.grid));
 
 		} catch(ClassNotFoundException ex){
+			setConnectionStatus(false);
 			ex.printStackTrace();
 		}
 	}
 
+	private void addDragListenerToWindow(final Node n, Stage stage){
 
-
-	private void addDragListeners(final Node n, Stage stage){
-
-		n.setOnMousePressed((MouseEvent mouseEvent) -> {
-			this.windowX = n.getScene().getWindow().getX() - mouseEvent.getScreenX();
-			this.windowY = n.getScene().getWindow().getY() - mouseEvent.getScreenY();
+		n.setOnMousePressed((MouseEvent me) -> {
+			this.windowX = n.getScene().getWindow().getX() - me.getScreenX();
+			this.windowY = n.getScene().getWindow().getY() - me.getScreenY();
 		});
 
-		n.setOnMouseDragged((MouseEvent mouseEvent) -> {
-			stage.setX(mouseEvent.getScreenX() + this.windowX);
-			stage.setY(mouseEvent.getScreenY() + this.windowY);
+		n.setOnMouseDragged((MouseEvent me) -> {
+			stage.setX(me.getScreenX() + this.windowX);
+			stage.setY(me.getScreenY() + this.windowY);
 		});
 	}
 
@@ -214,7 +232,7 @@ public class Client extends Application implements Initializable, Serializable {
 		this.scene = new Scene(root, 700, 600);
 
 		stage.initStyle(StageStyle.UNDECORATED);
-		addDragListeners(this.mainWindow,stage);
+		addDragListenerToWindow(this.mainWindow,stage);
 		stage.setScene(this.scene);
 		stage.setTitle("Game Of Life");
 		stage.show();
@@ -235,17 +253,23 @@ public class Client extends Application implements Initializable, Serializable {
 		this.createGridButton.setOnMouseClicked(e -> {
 			if(!this.connected) return;
 			try{
-				getGridFromServer();
+				this.getGridFromServer();
 			}catch(IOException ex){ex.printStackTrace();}
 		});
 
-		this.connectToServerButton.setOnMouseClicked(e -> Platform.runLater(() ->  connectToServer()));
+		this.connectToServerButton.setOnMouseClicked(e -> Platform.runLater(() ->  {
+			if(!this.connected){
+				this.connectToServer();
+			}else{
+				this.closeConnection();
+			}
+		}));
 
 		this.nextRoundButton.setOnMouseClicked(e -> {
 			if(!this.connected) return;
 				Platform.runLater(() ->  {
 					try{
-						getNextRoundFromServer();
+						this.getNextRoundFromServer();
 					}catch(IOException ex){ex.printStackTrace();}
 				});
 		});
@@ -255,9 +279,9 @@ public class Client extends Application implements Initializable, Serializable {
 			this.inputTextSubmitButton.setVisible(true);
 			this.inputTextField.setVisible(true);
 			this.inputTextSubmitButton.setOnMouseClicked(action -> {
-				if(!inputTextField.getText().trim().isEmpty()){
-					String rounds = inputTextField.getText();
-					inputTextField.clear();
+				if(!this.inputTextField.getText().trim().isEmpty()){
+					String rounds = this.inputTextField.getText();
+					this.inputTextField.clear();
 					try{
 						getXRoundsFromServer(rounds);
 					} catch(IOException ex){
@@ -280,24 +304,25 @@ public class Client extends Application implements Initializable, Serializable {
 		this.continuousPlayButton.setOnMouseClicked(e -> {
 			this.infinitePlay = !this.infinitePlay;
 			if(!this.infinitePlay){
-				this.continuousPlayButton.setGlyphName("PAUSE");
 				this.setButtonStatus(continuousPlayButton,false);
 			}else {
-				this.continuousPlayButton.setGlyphName("PLAY");
 				this.setButtonStatus(continuousPlayButton,true);
 			}
-
+			if(this.scheduler.isShutdown()){
+				this.scheduler = Executors.newScheduledThreadPool(1);
+			}
 			try{
 				Runnable scheduledRound = () -> {
-						try {
-							if(!this.infinitePlay){
-								scheduler.shutdown();
-								return;
-							}
-							getNextRoundFromServer();
-						} catch (IOException ex) {
-							ex.printStackTrace();
+					try {
+						if(!this.infinitePlay){
+							this.scheduler.shutdown();
+							return;
 						}
+						getNextRoundFromServer();
+					} catch (IOException ex) {
+						this.setConnectionStatus(false);
+						ex.printStackTrace();
+					}
 				};
 				if(this.infinitePlay){
 					this.scheduler.scheduleAtFixedRate(scheduledRound, 0, 1, TimeUnit.SECONDS);
@@ -311,11 +336,7 @@ public class Client extends Application implements Initializable, Serializable {
 			}
 		});
 
-		this.controlsMenuButton.setOnMouseClicked(e -> {
-			Platform.runLater(() -> {
-				ConnectionWindow.display();
-			});
-		});
+		this.controlsMenuButton.setOnMouseClicked(e -> Platform.runLater(() -> ConnectionWindow.display()));
 
 		this.communicationMenuButton.setOnMouseClicked(e -> {
 			Platform.runLater(() -> this.preDefinedValues = PredefWindow.display());
@@ -333,43 +354,5 @@ public class Client extends Application implements Initializable, Serializable {
 			hostServices.showDocument("www.joelmagner.com");
 		});
 
-	/*
-		saveConnection.setOnAction(e -> ConnectionWindow.display());
-
-		closeConnection.setOnAction(e -> closeConnection());
-
-		playMenuItem.setOnAction(e -> {
-			if(!this.connected) return;
-			try{
-				getGridFromServer();
-			}catch(IOException ex){ex.printStackTrace();}
-		});
-
-		optionsMenuItem.setOnAction(e -> {
-			if(!this.connected) return;
-			try {
-				OptionsWindow.display();
-			} catch (FileNotFoundException ex) {ex.printStackTrace();}
-		});
-
-		nextRoundMenuItem.setOnAction(e -> {
-			if(!this.connected) return;
-			try{
-				getNextRoundFromServer();
-			}catch(IOException ex){ex.printStackTrace();}
-		});
-
-		predefMenuItem.setOnAction(e -> preDefs = PredefWindow.display());
-
-		skipRoundsMenuItem.setOnAction(e -> {
-			if(!this.connected) return;
-			String rounds = Integer.toString(OptionsWindow.prompt());
-			try{
-				getXRoundsFromServer(rounds);
-			} catch(IOException ex){
-				ex.printStackTrace();
-			}
-		});
-*/
 	}
 }
