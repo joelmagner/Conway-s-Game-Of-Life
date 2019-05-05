@@ -1,19 +1,14 @@
 package Client;
 
 import javafx.application.Platform;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -25,11 +20,10 @@ public class PredefWindow {
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Select Predefine");
         window.setMinWidth(300);
-        window.setMinHeight(250);
+        window.setMinHeight(50);
 
 
         HBox preDefBox = new HBox();
-        preDefBox.setPadding(new Insets(0,0,10,0));
 
 
         //load settings if there are any
@@ -39,12 +33,12 @@ public class PredefWindow {
 
 
 
-        VBox layout = new VBox(10);
-        layout.setStyle("-fx-background:#fff;");
+        VBox layout = new VBox();
+        layout.setStyle("-fx-background:#34495e;");
         layout.getChildren().addAll(preDefBox);
 
         Scene scene = new Scene(layout);
-        scene.getStylesheets().add("style.css");
+        scene.getStylesheets().add("assets/style.css");
 
 
         for(String entry : preDefs){
@@ -54,6 +48,7 @@ public class PredefWindow {
 
             Button preDefButton = new Button(fileName);
             Button deleteButton = new Button("X");
+
             placeholder.getChildren().addAll(preDefButton,deleteButton);
             preDefButton.getStyleClass().add("options_button");
             deleteButton.getStyleClass().add("cancel_button");
@@ -69,12 +64,15 @@ public class PredefWindow {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-                Platform.runLater(() -> layout.getChildren().remove(placeholder));
+                Platform.runLater(() -> {
+                    layout.getChildren().remove(placeholder);
+                    window.setHeight((36*(layout.getChildren().size()))+8);
+                });
             });
+
         }
-
-
-        layout.setAlignment(Pos.CENTER);
+        window.setHeight((36*(layout.getChildren().size()))+8);
+        layout.setAlignment(Pos.TOP_CENTER);
         window.initStyle(StageStyle.UTILITY);
         window.setScene(scene);
         window.showAndWait();

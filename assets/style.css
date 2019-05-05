@@ -96,7 +96,35 @@
 .button_active:hover{
     -fx-fill:#44bd32;
 }
-
+.button_active{
+    -fx-fill:#4cd137;
+}
+.button_active:hover{
+    -fx-fill:#44bd32;
+}
+.button_disabled{
+    -fx-fill:#7f8c8d;
+}
+.button_disabled:hover{
+    -fx-fill:#ecf0f1;
+}
+.button_sun{
+    -fx-fill:#f1c40f;
+}
+.button_sun:hover{
+    -fx-fill:#f39c12;
+}
+.button_sky{
+    -fx-fill:#3498db;
+}
+.button_sky:hover{
+    -fx-fill:#0097e6;
+}
+.active_menu_item{
+    -fx-fill: #fff;
+    -fx-text-fill:#fff;
+    -fx-background-color: #0097e6;
+}
 .control_buttons:hover{
     -fx-fill:#95a5a6;
 }

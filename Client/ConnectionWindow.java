@@ -5,7 +5,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.*;
@@ -95,7 +94,7 @@ public class ConnectionWindow{
 
         window.initStyle(StageStyle.UTILITY);
         Scene scene = new Scene(layout);
-        scene.getStylesheets().add("style.css");
+        scene.getStylesheets().add("assets/style.css");
         window.setScene(scene);
         window.showAndWait();
 

@@ -2,64 +2,73 @@ package Server;
 
 import Common.Grid;
 import Common.Square;
-import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
 
 public class GameManager {
 
-    public Grid round(Grid g){
-        Grid newGrid = new Grid();
-        for (Square square : g.getGrid()) {
-            newGrid.grid.add(this.constraints(square,g));
+    public Grid round(Grid g) {
+        Grid newGrid = g.clone();
+        for (Square s : g.getGrid()) {
+            newGrid.grid.add(this.constraints(s.clone(),g));
         }
         return newGrid;
     }
 
+    /**
+     *
+     * @param square
+     * @param grid
+     * @return Square
+     * <p>
+     *  x  x  x
+     *  x [x] x
+     *  x  x  x
+     *  possible neighbours (8)
+     * </p>
+     * Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+     * Any live cell with two or three live neighbours lives on to the next generation.
+     * Any live cell with more than three live neighbours dies, as if by overpopulation.
+     * Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+     */
+
     public Square constraints(Square square, Grid grid) {
-        // x  x  x
-        // x [x] x
-        // x  x  x
-        // possible neighbours (8)
         int neighbours = this.calcNeighbours(square, grid);
 
         if (neighbours < 2) {
-            this.death(square); // died of loneliness
-        } else if ((neighbours == 2 || neighbours == 3) && square.getSquareStatus()) {
-            this.birth(square); // alive
-        } else if (neighbours > 3) {
-            this.death(square); // died of overcrowding
-        } else if (neighbours == 3 && !square.getSquareStatus()) {
-            this.birth(square); // dead cell => alive cell
-        } else {
+             this.death(square);
+        } else if ((neighbours == 3 || neighbours == 2) && square.getSquareStatus()) {
+            this.birth(square);
+        } else if (neighbours > 3 && square.getSquareStatus()){
             this.death(square);
+        } else if (neighbours == 3 && !square.getSquareStatus()) {
+            this.birth(square);
         }
         return square;
-    }
+}
 
     private int calcNeighbours(Square square, Grid grid) {
-
-        int x = square.getSquareX(),
-                y = square.getSquareY(),
-                n = 0; //neighbours
-
-        for (Square s : grid.getGrid()) {
-            int sx = s.getSquareX(),
-                    sy = s.getSquareY();
-            boolean st = s.getSquareStatus();
-
-            if (x + 1 	== sx && y + 1 	== sy && st) n++;
-            if (x + 1 	== sx && y - 1 	== sy && st) n++;
-            if (x + 1 	== sx && y 		== sy && st) n++;
-            if (x - 1 	== sx && y + 1 	== sy && st) n++;
-            if (x - 1 	== sx && y - 1 	== sy && st) n++;
-            if (x - 1 	== sx && y 		== sy && st) n++;
-            if (x 		== sx && y + 1 	== sy && st) n++;
-            if (x 		== sx && y - 1 	== sy && st) n++;
-            //             ^                ^     ^
-            //         SquareX           SquareY  Active
+        int n = 0; //neighbours
+        for (Square other : grid.getGrid()) {
+            boolean alive = other.getSquareStatus();
+            if (!alive) continue;
+            if (isNeighbour(square, other)) {
+                n++;
+            }
         }
         return n;
+    }
+    private boolean isNeighbour(Square square, Square other) {
+        int x = square.getSquareX(),
+            y = square.getSquareY(),
+            px = other.getSquareX(),
+            py = other.getSquareY();
+        if (x == px && y == py) { //same square
+            return false;
+        }
+        return  x - 1 <= px &&
+                px <= x + 1 &&
+                y - 1 <= py &&
+                py <= y + 1;
     }
 
     public void death(Square square) {
@@ -71,16 +80,4 @@ public class GameManager {
         square.setSquareStatus(true);
         square.setSquareFill("#8BC34A");
     }
-    //overloads
-    public void death(Square square, String color) {
-        square.setSquareStatus(false);
-        square.setSquareFill(color);
-    }
-
-    public void birth(Square square, String color) {
-        square.setSquareStatus(true);
-        square.setSquareFill(color);
-    }
-
-
 }

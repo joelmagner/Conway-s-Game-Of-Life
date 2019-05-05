@@ -9,15 +9,13 @@ public class Square implements Serializable {
 	boolean status;
 	String fill, stroke;
 
-	public Square() {
-
-	}
-
-	public Square(int x, int y, int squareSize, boolean status) {
+	public Square(int x, int y, int squareSize, boolean status, String fill, String stroke) {
 		this.x = x;
 		this.y = y;
 		this.squareSize = squareSize;
 		this.status = status;
+		this.fill = fill;
+		this.stroke = stroke;
 	}
 
 	public int getSquareX() {
@@ -68,5 +66,7 @@ public class Square implements Serializable {
 		this.squareSize = squareSize;
 	}
 
-
+	public Square clone(){
+		return new Square(this.x,this.y,this.squareSize, this.status, this.fill, this.stroke);
+	}
 }

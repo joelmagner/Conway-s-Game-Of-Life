@@ -1,8 +1,6 @@
 package Server;
 import Common.Grid;
 import Common.Square;
-
-import java.awt.*;
 import java.io.*;
 import java.net.*;
 
@@ -15,7 +13,7 @@ public class Server {
 			 serverConnection = new ServerSocket(5000);
 
 			System.out.println("Server.Server Ready...\nWaiting For Incoming Connections...");
-			Socket socket = null;
+			Socket socket;
 			while(true){
 				socket = serverConnection.accept();
 				performTask(socket);
@@ -43,7 +41,7 @@ public class Server {
 							y = Integer.parseInt(v);
 							for (Square s : grid.getGrid()) {
 								if (s.getSquareX() == x && s.getSquareY() == y) {
-									s.setSquareFill("#DDDDDD");
+									s.setSquareFill("#dddddd");
 									s.setSquareStatus(true);
 									grid.setGrid(grid.grid);
 								}
@@ -89,25 +87,26 @@ public class Server {
 							grid = new Grid(gridSize, squareSize, spawnChance);
 							grid = gm.round(grid);
 							addPreDefsToGrid(preDefs);
-							System.out.println("sending obj now!");
+							System.out.println("Sending: grid");
 							serverOutputStream.writeObject(grid);
 							break;
 						case 2: // next round
 							serverOutputStream.reset();
 							String preDefinedValues = dIn.readUTF();
+							//addPreDefsToGrid(preDefinedValues);
 							grid = gm.round(grid);
-							addPreDefsToGrid(preDefinedValues);
 							serverOutputStream.writeObject(grid);
 							break;
 						case 3: // next X rounds
 							serverOutputStream.reset();
 							int rounds = Integer.parseInt(dIn.readUTF());
 							System.out.println("Rounds : "+ rounds);
-							for(int i=0; i< rounds; i++){
+							for(int i=0; i < rounds; i++){
 								grid = gm.round(grid);
 							}
 							serverOutputStream.writeObject(grid);
 							break;
+
 						default:
 							break;
 					}

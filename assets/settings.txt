@@ -1,0 +1,3 @@
+gridsize:50
+squaresize:15
+spawnchance:15

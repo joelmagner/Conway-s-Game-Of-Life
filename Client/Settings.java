@@ -1,11 +1,6 @@
 package Client;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.text.ParseException;
 import java.util.ArrayList;
 
 public class Settings implements Serializable {
@@ -15,10 +10,11 @@ public class Settings implements Serializable {
                 squareSize,
                 spawnChance,
                 port;
-    public String ipAddress, preDefs = "PREDEFS";
-    public static final String settingsFilePath="settings.txt",
-                    connectionFilePath="conn.txt",
-                    preDefsFilePath="predefs.txt";
+    public String ipAddress;
+    public static final String settingsFilePath= "assets/settings.txt",
+                    connectionFilePath= "assets/conn.txt",
+                    preDefs = "PREDEFS",
+                    preDefsFilePath= "assets/predefs.txt";
     public Settings(){
 
     }
@@ -31,7 +27,6 @@ public class Settings implements Serializable {
         FileOutputStream writer = new FileOutputStream(filePath, true);
         writer.write((msg + "\n").getBytes());
         writer.close();
-        System.out.println("Wrote predef to file!");
     }
 
     public void deletePreDefFromFile(String fileName, String filePath) throws IOException{
@@ -46,15 +41,14 @@ public class Settings implements Serializable {
             while ((line = reader.readLine()) != null) {
                 if(!line.startsWith(fileName)){
                     preDefList.add(line);
-                    System.out.println("lines that were cut!" + fileName);
                 }
             }
             reader.close();
             PrintWriter pw = new PrintWriter(filePath);
             pw.close();
             FileOutputStream writer = new FileOutputStream(filePath, true);
-            for(String predef : preDefList){
-                writer.write((predef+"\n").getBytes());
+            for(String preDef : preDefList){
+                writer.write((preDef+"\n").getBytes());
             }
             writer.close();
         } catch (IOException e) {
@@ -90,8 +84,6 @@ public class Settings implements Serializable {
             writer.write((row + "\n").getBytes());
         }
         writer.close();
-        System.out.println("Saved settings to file!");
-
     }
 
     public String getGridSettings(){

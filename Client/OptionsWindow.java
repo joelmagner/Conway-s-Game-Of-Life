@@ -6,16 +6,16 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.*;
-import javafx.scene.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -176,7 +176,7 @@ public class OptionsWindow{
         saveToFileLayout.getChildren().addAll(inputField,save);
         saveToFileLayout.setStyle("-fx-background:#fff;");
         Scene saveFileScene = new Scene(saveToFileLayout);
-        saveFileScene.getStylesheets().add("style.css");
+        saveFileScene.getStylesheets().add("assets/style.css");
         saveToFileWindow.initStyle(StageStyle.UTILITY);
         saveToFileWindow.setTitle("Save Predefine as...");
         save.getStyleClass().add("confirm_button");
@@ -191,7 +191,7 @@ public class OptionsWindow{
         layout.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(layout);
-        scene.getStylesheets().add("style.css");
+        scene.getStylesheets().add("assets/style.css");
         window.initStyle(StageStyle.UTILITY);
         window.setScene(scene);
         window.showAndWait();

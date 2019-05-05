@@ -1,3 +1,0 @@
-circle:1x1 1x2 1x3 1x4 0x1 0x2 0x3
-glider:1x1 1x2 1x3 1x4 0x1 0x2 0x3
-testing:1x2 43x2 1x2 3x2 1x2 32x12
