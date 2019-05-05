@@ -1,9 +1,3 @@
-# JavaNetworking
+# *Conway's* Game Of Life
 
-
-Dependencies: 
-* [JavaFx](https://gluonhq.com/products/javafx/)
-
-How to import JavaFx:
-* [Eclipse](https://www.eclipse.org/efxclipse/install.html)
-
+![alt text](https://i.imgur.com/RKiNSXK.png "Logo Title Text 1")
