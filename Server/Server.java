@@ -85,7 +85,6 @@ public class Server {
 								/*dont do anything */
 							}
 							grid = new Grid(gridSize, squareSize, spawnChance);
-							grid = gm.round(grid);
 							addPreDefsToGrid(preDefs);
 							System.out.println("Sending: grid");
 							serverOutputStream.writeObject(grid);

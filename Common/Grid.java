@@ -18,8 +18,7 @@ public class Grid implements Serializable {
 		this.squareSize = squareSize;
 		for (int i = 0; i < gridSize; i++) {
 			for (int j = 0; j < gridSize; j++) {
-				Square square;
-				square = new Square(i, j, squareSize, Math.random() < spawnChance/100, "#ffffff", "#f5f6fa");
+				Square square = new Square(i, j, squareSize, Math.random() < spawnChance/100, "#ffffff", "#f5f6fa");
 				this.grid.add(square);
 			}
 		}

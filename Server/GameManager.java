@@ -35,7 +35,7 @@ public class GameManager {
         int neighbours = this.calcNeighbours(square, grid);
 
         if (neighbours < 2) {
-             this.death(square);
+            this.death(square);
         } else if ((neighbours == 3 || neighbours == 2) && square.getSquareStatus()) {
             this.birth(square);
         } else if (neighbours > 3 && square.getSquareStatus()){
@@ -44,7 +44,7 @@ public class GameManager {
             this.birth(square);
         }
         return square;
-}
+    }
 
     private int calcNeighbours(Square square, Grid grid) {
         int n = 0; //neighbours
