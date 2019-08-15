@@ -14,7 +14,7 @@ public class Square implements Serializable {
 		this.y = y;
 		this.squareSize = squareSize;
 		this.status = status;
-		this.fill = fill;
+		this.fill = status ? "#8BC34A" : fill;
 		this.stroke = stroke;
 	}
 
