@@ -15,16 +15,24 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
+
+/**
+ * @author Joel Magnér
+ * <p>
+ *     Option window for the client.
+ *     * Presents usermade settings to the grid.
+ *     * Predef editor with autocompletion.
+ *     * Allows for the creation and naming of new predefines.
+ * </p>
+ */
 
 public class OptionsWindow{
 
     static String preDefValues;
     static String fileName;
     static int keyPresses = 0;
-    public static String display() throws FileNotFoundException {
+    public static String display() {
 
 
         //load settings if there are any

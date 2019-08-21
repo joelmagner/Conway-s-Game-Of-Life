@@ -1,23 +1,40 @@
 package Client;
-
 import java.io.*;
 import java.util.ArrayList;
+
+/**
+ * @author Joel Magnér
+ * <p>
+ *     Main purpose is dealing with volatility.
+ *     Allows user to save and read their settings to or from disk.
+ * </p>
+ */
 
 public class Settings implements Serializable {
 
 
-    public int gridSize,
+    public int  gridSize,
                 squareSize,
                 spawnChance,
                 port;
     public String ipAddress;
-    public static final String settingsFilePath= "assets/settings.txt",
-                    connectionFilePath= "assets/conn.txt",
+    public static final String settingsFilePath = "assets/settings.txt",
+                    connectionFilePath = "assets/conn.txt",
                     preDefs = "PREDEFS",
-                    preDefsFilePath= "assets/predefs.txt";
+                    preDefsFilePath = "assets/predefs.txt";
     public Settings(){
 
     }
+
+    /**
+     *
+     * @param msg String - message to be saved.
+     * @param filePath String - location of file.
+     * @throws IOException
+     * <p>
+     *     Saves user inputted predefined values for the grid to a file.
+     * </p>
+     */
 
     public void writePreDefToFile(String msg, String filePath) throws IOException{
         File file = new File(filePath);
@@ -29,8 +46,16 @@ public class Settings implements Serializable {
         writer.close();
     }
 
-    public void deletePreDefFromFile(String fileName, String filePath) throws IOException{
-        String newFileContents = "";
+    /**
+     *
+     * @param fileName String - name of file.
+     * @param filePath String - path to file.
+     * <p>
+     *     User deletes an entry in the predefine file.
+     * </p>
+     */
+
+    public void deletePreDefFromFile(String fileName, String filePath){
         ArrayList<String> preDefList = new ArrayList<>();
         BufferedReader reader;
         try {
@@ -56,6 +81,16 @@ public class Settings implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param filePath String - path to file
+     * @return preDefList
+     *
+     * <p>
+     *     Reads from the predefined file.
+     * </p>
+     */
+
     public ArrayList<String> readPreDefFromFile(String filePath){
         ArrayList<String> preDefList = new ArrayList<>();
         BufferedReader reader;
@@ -72,6 +107,15 @@ public class Settings implements Serializable {
         return preDefList;
     }
 
+    /**
+     *
+     * @param msg String - message to be saved.
+     * @param filepath String - path to file.
+     * @throws IOException
+     * <p>
+     *     Writes user settings to a file.
+     * </p>
+     */
 
     public void writeSettingsToFile(String[] msg, String filepath) throws IOException{
 
@@ -86,9 +130,25 @@ public class Settings implements Serializable {
         writer.close();
     }
 
+    /**
+     * @return grid settings
+     * <p>
+     *     The grid format separated by ":".
+     *     eg. 10:20:50:PREDEFS1x3 1x4 1x5
+     * </p>
+     */
+
     public String getGridSettings(){
         return this.gridSize+":"+this.squareSize+":"+this.spawnChance+this.preDefs;
     }
+
+    /**
+     *
+     * @param filepath - path to settings file
+     * <p>
+     *      parses the settings file
+     * </p>
+     */
 
     public void readSettingsFromFile(String filepath){
         BufferedReader reader;

@@ -1,13 +1,25 @@
 package Common;
 
-import javafx.scene.paint.Color;
-
 import java.io.Serializable;
 
+/**
+ * @author Joel Magnér
+ *
+ */
 public class Square implements Serializable {
 	public int x, y, squareSize;
 	boolean status;
 	String fill, stroke;
+
+	/**
+	 *
+	 * @param x - x pos
+	 * @param y - y pos
+	 * @param squareSize - size of square
+	 * @param status - status of square, alive of dead.
+	 * @param fill - color of square
+	 * @param stroke - outline of square
+	 */
 
 	public Square(int x, int y, int squareSize, boolean status, String fill, String stroke) {
 		this.x = x;

@@ -12,8 +12,20 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * @author Joel Magnér
+ * <p>
+ *     Predefine selector window
+ * </p>
+ */
+
 public class PredefWindow {
     static String preDefValues;
+
+    /**
+     *
+     * @return preDefValues - the predefined values for an entry that the user selected.
+     */
 
     public static String display() {
         Stage window = new Stage();
@@ -61,7 +73,7 @@ public class PredefWindow {
             deleteButton.setOnAction(e -> {
                 try {
                     s.deletePreDefFromFile(fileName,s.preDefsFilePath);
-                } catch (IOException ex) {
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
                 Platform.runLater(() -> {

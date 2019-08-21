@@ -9,12 +9,23 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.*;
 import javafx.scene.*;
-
 import java.io.IOException;
+
+/**
+ * @author Joel Magnér
+ */
 
 public class ConnectionWindow{
 
     static boolean answer;
+
+    /**
+     *
+     * @return answer - user answer to save or discard changes
+     * <p>
+     *     User can change their connection settings here.
+     * </p>
+     */
 
     public static boolean display() {
         Stage window = new Stage();
