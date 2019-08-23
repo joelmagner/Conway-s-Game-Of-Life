@@ -94,10 +94,10 @@ public class Client extends Application implements Initializable, Serializable {
 			this.dos.flush();
 			this.grid = (Grid) this.ois.readObject();
 		} catch(ClassNotFoundException ex){
-			setConnectionStatus(false);
+			this.setConnectionStatus(false);
 			ex.printStackTrace();
 		}
-		Platform.runLater(() -> setMainPane(render.render(this.grid)));
+		Platform.runLater(() -> this.setMainPane(this.render.render(this.grid)));
 	}
 
 	public void setMainPane(BorderPane pane){
@@ -145,7 +145,7 @@ public class Client extends Application implements Initializable, Serializable {
 
 	private void closeConnection(){
 		try{
-			closeStreams();
+			this.closeStreams();
 		}catch(IOException ex){
 			this.setConnectionStatus(false);
 			ex.printStackTrace();
@@ -182,19 +182,19 @@ public class Client extends Application implements Initializable, Serializable {
 			Settings s = new Settings();
 			s.readSettingsFromFile(s.settingsFilePath);
 			this.dos.writeByte(1);
-			if (preDefinedValues == null){
+			if (this.preDefinedValues == null){
 				this.dos.writeUTF(s.getGridSettings());
 			} else {
-				this.dos.writeUTF(s.getGridSettings()+preDefinedValues);
-				preDefinedValues = "";
+				this.dos.writeUTF(s.getGridSettings()+this.preDefinedValues);
+				this.preDefinedValues = "";
 			}
 			this.dos.flush();
 			this.grid = (Grid) this.ois.readObject();
 			this.backupGrid = this.grid;
 			this.resizeWindow(s);
-			Platform.runLater(() -> setMainPane(this.render.render(this.grid)));
+			Platform.runLater(() -> this.setMainPane(this.render.render(this.grid)));
 		} catch(ClassNotFoundException ex){
-			setConnectionStatus(false);
+			this.setConnectionStatus(false);
 			ex.printStackTrace();
 		}
 	}
@@ -217,13 +217,13 @@ public class Client extends Application implements Initializable, Serializable {
 				this.dos.writeUTF("");
 			}else{
 				this.dos.writeUTF(this.preDefinedValues);
-				preDefinedValues = "";
+				this.preDefinedValues = "";
 			}
 			this.dos.flush();
 			this.grid = (Grid) this.ois.readObject();
-			Platform.runLater(() ->  setMainPane(this.render.render(this.grid)));
+			Platform.runLater(() ->  this.setMainPane(this.render.render(this.grid)));
 		} catch(ClassNotFoundException ex){
-			setConnectionStatus(false);
+			this.setConnectionStatus(false);
 			ex.printStackTrace();
 		}
 	}
@@ -245,10 +245,10 @@ public class Client extends Application implements Initializable, Serializable {
 			this.dos.writeUTF(rounds);
 			this.dos.flush();
 			this.grid = (Grid) this.ois.readObject();
-			setMainPane(render.render(this.grid));
+			this.setMainPane(this.render.render(this.grid));
 
 		} catch(ClassNotFoundException ex){
-			setConnectionStatus(false);
+			this.setConnectionStatus(false);
 			ex.printStackTrace();
 		}
 	}
@@ -418,7 +418,7 @@ public class Client extends Application implements Initializable, Serializable {
 		this.inputTextField.setVisible(false);
 
 		this.exitButton.setOnAction(e -> {
-			scheduler.shutdown();
+			this.scheduler.shutdown();
 			Platform.exit();
 		});
 
