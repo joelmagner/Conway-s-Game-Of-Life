@@ -190,7 +190,6 @@ public class Client extends Application implements Initializable, Serializable {
 			}
 			this.dos.flush();
 			this.grid = (Grid) this.ois.readObject();
-			this.backupGrid = this.grid;
 			this.resizeWindow(s);
 			Platform.runLater(() -> this.setMainPane(this.render.render(this.grid)));
 		} catch(ClassNotFoundException ex){
